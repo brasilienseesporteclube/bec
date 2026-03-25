@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 const COLORS = {
   primary: "#278273",
   primaryDark: "#1f5f55",
-  bg: "#278273",
+  bg: "#ffffff",
+  text: "#1f2937",
+  light: "#f5f5f5"
 };
 
 const modalidades = [
