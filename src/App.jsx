@@ -17,7 +17,7 @@ const conquistas = [
     categoria: "Feminino",
     ano: "2023",
     medalha: "🥉",
-    imagem: "/Ativos/conquista1.jpeg",
+    imagem: "/assets/conquista1.jpeg",
     resumo: "Primeira grande campanha nacional do clube.",
     historia:
       "Em 2023, o BEC entrou na Superliga C e mostrou maturidade e organização. O 3º lugar marcou a entrada do clube no cenário nacional.",
@@ -27,7 +27,7 @@ const conquistas = [
     categoria: "Feminino",
     ano: "2025",
     medalha: "🥈",
-    imagem: "/Ativos/conquista2.jpeg",
+    imagem: "/assets/conquista2.jpeg",
     resumo: "Campanha consistente e competitiva.",
     historia:
       "O elenco feminino chegou à final com desempenho sólido, mostrando evolução técnica e força coletiva.",
@@ -37,7 +37,7 @@ const conquistas = [
     categoria: "Masculino",
     ano: "2025",
     medalha: "🥈",
-    imagem: "/Ativos/conquista3.jpeg",
+    imagem: "/assets/conquista3.jpeg",
     resumo: "Confirmação da força do time masculino.",
     historia:
       "Após o título nacional, o time manteve alto nível e chegou novamente à decisão estadual.",
@@ -47,7 +47,7 @@ const conquistas = [
     categoria: "Feminino",
     ano: "2025",
     medalha: "🥉",
-    imagem: "/Ativos/conquista4.jpeg",
+    imagem: "/assets/conquista4.jpeg",
     resumo: "Presença constante no cenário nacional.",
     historia:
       "A equipe reafirmou sua competitividade com mais um bom resultado na Superliga.",
@@ -57,7 +57,7 @@ const conquistas = [
     categoria: "Feminino",
     ano: "2025",
     medalha: "🥇",
-    imagem: "/Ativos/conquista5.jpeg",
+    imagem: "/assets/conquista5.jpeg",
     resumo: "Domínio na competição.",
     historia:
       "O clube consolidou sua hegemonia com mais um título, fruto de consistência e trabalho contínuo.",
@@ -67,7 +67,7 @@ const conquistas = [
     categoria: "Feminino",
     ano: "2025",
     medalha: "🥈",
-    imagem: "/Ativos/conquista6.jpeg",
+    imagem: "/assets/conquista6.jpeg",
     resumo: "Campanha forte e consistente.",
     historia:
       "A equipe chegou à final mostrando intensidade e alto nível competitivo.",
@@ -77,7 +77,7 @@ const conquistas = [
     categoria: "Masculino",
     ano: "2024",
     medalha: "🥇",
-    imagem: "/Ativos/conquista7.jpeg",
+    imagem: "/assets/conquista7.jpeg",
     resumo: "Título histórico nacional.",
     historia:
       "A conquista colocou o BEC entre os grandes projetos do voleibol nacional.",
