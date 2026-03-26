@@ -477,7 +477,7 @@ export default function App() {
               src="/assets/logo.jpeg"
               alt="Brasiliense Esporte Clube"
               style={{
-                height: isMobile ? 62 : 86,
+                height: 86,
                 width: "auto",
                 objectFit: "contain",
                 display: "block",
@@ -1189,11 +1189,11 @@ export default function App() {
             ...s.section,
             position: "relative",
             display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "1.1fr .9fr",
+            gridTemplateColumns: "1.1fr .9fr",
             gap: 48,
             alignItems: "center",
-            paddingTop: isMobile ? 48 : 80,
-            paddingBottom: isMobile ? 48 : 80,
+            paddingTop: 80,
+            paddingBottom: 80,
           }}
         >
           <div>
@@ -1215,7 +1215,7 @@ export default function App() {
               style={{
                 margin: "24px 0 0",
                 maxWidth: 760,
-                fontSize: isMobile ? 42 : 72,
+                fontSize: 72,
                 lineHeight: 1.02,
                 fontWeight: 900,
                 color: COLORS.primaryDark,
@@ -1228,7 +1228,7 @@ export default function App() {
               style={{
                 marginTop: 24,
                 maxWidth: 760,
-                fontSize: isMobile ? 17 : 21,
+                fontSize: 21,
                 lineHeight: 1.7,
                 color: COLORS.muted,
               }}
@@ -1284,7 +1284,7 @@ export default function App() {
               <h2
                 style={{
                   margin: "12px 0 0",
-                  fontSize: isMobile ? 26 : 34,
+                  fontSize: 34,
                   fontWeight: 900,
                   color: COLORS.primaryDark,
                 }}
@@ -1342,9 +1342,7 @@ export default function App() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: isMobile
-              ? "repeat(2, minmax(0, 1fr))"
-              : "repeat(4, minmax(0, 1fr))",
+            gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
             gap: 20,
           }}
         >
@@ -1373,7 +1371,7 @@ export default function App() {
           <h2
             style={{
               margin: "12px 0 0",
-              fontSize: isMobile ? 38 : 52,
+              fontSize: 52,
               fontWeight: 900,
               color: COLORS.primaryDark,
             }}
@@ -1386,9 +1384,7 @@ export default function App() {
           style={{
             marginTop: 40,
             display: "grid",
-            gridTemplateColumns: isMobile
-              ? "1fr"
-              : "repeat(4, minmax(0, 1fr))",
+            gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
             gap: 24,
           }}
         >
@@ -1399,8 +1395,6 @@ export default function App() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  gap: 12,
-                  flexWrap: "wrap",
                 }}
               >
                 <span style={{ fontSize: 30 }}>{item.icone}</span>
@@ -1421,7 +1415,7 @@ export default function App() {
               <h3
                 style={{
                   margin: "20px 0 0",
-                  fontSize: isMobile ? 24 : 30,
+                  fontSize: 30,
                   fontWeight: 900,
                   color: COLORS.primaryDark,
                 }}
@@ -1466,7 +1460,7 @@ export default function App() {
             <h2
               style={{
                 margin: "12px 0 0",
-                fontSize: isMobile ? 38 : 52,
+                fontSize: 52,
                 fontWeight: 900,
                 color: COLORS.primaryDark,
               }}
@@ -1479,9 +1473,7 @@ export default function App() {
             style={{
               marginTop: 48,
               display: "grid",
-              gridTemplateColumns: isMobile
-                ? "1fr"
-                : "repeat(3, minmax(0, 1fr))",
+              gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
               gap: 20,
             }}
           >
@@ -1584,7 +1576,7 @@ export default function App() {
           <h2
             style={{
               margin: "12px 0 0",
-              fontSize: isMobile ? 38 : 52,
+              fontSize: 52,
               fontWeight: 900,
               color: COLORS.primaryDark,
             }}
@@ -1597,9 +1589,7 @@ export default function App() {
           style={{
             marginTop: 56,
             display: "grid",
-            gridTemplateColumns: isMobile
-              ? "1fr"
-              : "repeat(5, minmax(0, 1fr))",
+            gridTemplateColumns: "repeat(5, minmax(0, 1fr))",
             gap: 24,
           }}
         >
@@ -1668,9 +1658,9 @@ export default function App() {
             style={{
               borderRadius: 35,
               background: COLORS.primaryDark,
-              padding: isMobile ? 24 : 40,
+              padding: 40,
               display: "grid",
-              gridTemplateColumns: isMobile ? "1fr" : "1fr auto",
+              gridTemplateColumns: "1fr auto",
               gap: 32,
               alignItems: "center",
             }}
@@ -1690,7 +1680,7 @@ export default function App() {
               <h2
                 style={{
                   margin: "12px 0 0",
-                  fontSize: isMobile ? 36 : 52,
+                  fontSize: 52,
                   fontWeight: 900,
                   color: "white",
                 }}
@@ -1701,7 +1691,7 @@ export default function App() {
                 style={{
                   margin: "18px 0 0",
                   maxWidth: 720,
-                  fontSize: isMobile ? 17 : 20,
+                  fontSize: 20,
                   lineHeight: 1.7,
                   color: "rgba(255,255,255,.78)",
                 }}
@@ -1756,7 +1746,7 @@ export default function App() {
           <h2
             style={{
               margin: "12px 0 0",
-              fontSize: isMobile ? 38 : 52,
+              fontSize: 52,
               fontWeight: 900,
               color: COLORS.primaryDark,
             }}
@@ -1766,7 +1756,7 @@ export default function App() {
           <p
             style={{
               margin: "18px 0 0",
-              fontSize: isMobile ? 17 : 20,
+              fontSize: 20,
               lineHeight: 1.7,
               color: COLORS.muted,
             }}
@@ -1780,9 +1770,7 @@ export default function App() {
           style={{
             marginTop: 48,
             display: "grid",
-            gridTemplateColumns: isMobile
-              ? "1fr"
-              : "repeat(4, minmax(0, 1fr))",
+            gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
             gap: 24,
           }}
         >
@@ -1828,7 +1816,7 @@ export default function App() {
                 <h3
                   style={{
                     margin: "16px 0 0",
-                    fontSize: isMobile ? 24 : 28,
+                    fontSize: 28,
                     fontWeight: 900,
                     color: COLORS.primaryDark,
                   }}
@@ -1868,7 +1856,7 @@ export default function App() {
             borderRadius: 32,
             border: `1px solid ${COLORS.border}`,
             background: COLORS.primaryDark,
-            padding: isMobile ? 24 : 32,
+            padding: 32,
             textAlign: "center",
             boxShadow: "0 10px 30px rgba(19,50,46,.08)",
           }}
@@ -1887,7 +1875,7 @@ export default function App() {
           <h2
             style={{
               margin: "12px 0 0",
-              fontSize: isMobile ? 36 : 52,
+              fontSize: 52,
               fontWeight: 900,
               color: "white",
             }}
@@ -1898,7 +1886,7 @@ export default function App() {
             style={{
               margin: "18px auto 0",
               maxWidth: 760,
-              fontSize: isMobile ? 17 : 20,
+              fontSize: 20,
               lineHeight: 1.7,
               color: "rgba(255,255,255,.78)",
             }}
