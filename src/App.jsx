@@ -218,6 +218,7 @@ function Counter({ end, label }) {
         setCount(start);
       }
     }, 40);
+
     return () => clearInterval(timer);
   }, [end]);
 
@@ -262,6 +263,8 @@ function styles() {
       minHeight: "100vh",
       color: COLORS.text,
       background: COLORS.bg,
+      fontFamily:
+        'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     },
     section: {
       maxWidth: 1240,
@@ -283,6 +286,7 @@ function styles() {
       fontWeight: 800,
       cursor: "pointer",
       textDecoration: "none",
+      display: "inline-block",
     },
   };
 }
@@ -310,90 +314,114 @@ export default function App() {
           position: "sticky",
           top: 0,
           zIndex: 30,
-          borderBottom: `1px solid ${COLORS.border}`,
           background: "rgba(255,255,255,.96)",
+          borderBottom: `1px solid ${COLORS.border}`,
           backdropFilter: "blur(14px)",
         }}
       >
         <div
           style={{
             ...s.section,
-            display: "flex",
+            display: "grid",
+            gridTemplateColumns: "1fr auto 1fr",
             alignItems: "center",
-            justifyContent: "space-between",
-            paddingTop: 16,
-            paddingBottom: 16,
+            paddingTop: 12,
+            paddingBottom: 12,
+            gap: 16,
           }}
         >
-          <button
-            onClick={() => setMenuOpen(true)}
-            aria-label="Abrir menu"
+          <nav
             style={{
-              width: 48,
-              height: 48,
-              borderRadius: 999,
-              border: `1px solid ${COLORS.border}`,
-              background: COLORS.soft,
-              color: COLORS.primaryDark,
-              fontSize: 22,
-              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: 24,
+              justifyContent: "flex-start",
             }}
           >
-            ☰
-          </button>
+            <button
+              onClick={() => setMenuOpen(true)}
+              aria-label="Abrir menu"
+              style={{
+                width: 46,
+                height: 46,
+                borderRadius: 999,
+                border: `1px solid ${COLORS.border}`,
+                background: COLORS.soft,
+                color: COLORS.primaryDark,
+                fontSize: 20,
+                cursor: "pointer",
+                fontWeight: 700,
+              }}
+            >
+              ☰
+            </button>
+
+            <a
+              href="#hero"
+              style={{
+                color: COLORS.primaryDark,
+                fontWeight: 800,
+                textDecoration: "none",
+              }}
+            >
+              Clube
+            </a>
+            <a
+              href="#modalidades"
+              style={{
+                color: COLORS.primaryDark,
+                fontWeight: 800,
+                textDecoration: "none",
+              }}
+            >
+              Modalidades
+            </a>
+            <a
+              href="#conquistas"
+              style={{
+                color: COLORS.primaryDark,
+                fontWeight: 800,
+                textDecoration: "none",
+              }}
+            >
+              Conquistas
+            </a>
+          </nav>
 
           <a
             href="#hero"
-            style={{ display: "flex", alignItems: "center", gap: 16, textDecoration: "none" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              textDecoration: "none",
+            }}
           >
-            <div
+            <img
+              src="/assets/logo.jpeg"
+              alt="Brasiliense Esporte Clube"
               style={{
-                width: 64,
-                height: 64,
-                borderRadius: 999,
-                overflow: "hidden",
-                border: `1px solid ${COLORS.border}`,
-                background: COLORS.soft,
-                padding: 4,
+                height: 86,
+                width: "auto",
+                objectFit: "contain",
+                display: "block",
               }}
-            >
-              <img
-                src="/assets/logo.jpeg"
-                alt="Brasiliense Esporte Clube"
-                style={{ width: "100%", height: "100%", objectFit: "contain" }}
-              />
-            </div>
-            <div>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: 12,
-                  fontWeight: 800,
-                  letterSpacing: ".35em",
-                  color: COLORS.primaryDark,
-                }}
-              >
-                BRASILIENSE
-              </p>
-              <p
-                style={{
-                  margin: "4px 0 0",
-                  fontSize: 11,
-                  color: COLORS.muted,
-                  letterSpacing: ".35em",
-                }}
-              >
-                ESPORTE CLUBE
-              </p>
-            </div>
+            />
           </a>
 
-          <nav style={{ display: "flex", alignItems: "center", gap: 24 }}>
+          <nav
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 24,
+              justifyContent: "flex-end",
+            }}
+          >
             <a
               href="#treinar"
               style={{
                 color: COLORS.primaryDark,
-                fontWeight: 700,
+                fontWeight: 800,
                 textDecoration: "none",
               }}
             >
@@ -403,7 +431,7 @@ export default function App() {
               href="#loja"
               style={{
                 color: COLORS.primaryDark,
-                fontWeight: 700,
+                fontWeight: 800,
                 textDecoration: "none",
               }}
             >
@@ -412,7 +440,11 @@ export default function App() {
             <button
               type="button"
               onClick={() => setSocioOpen(true)}
-              style={{ ...s.button, borderRadius: 999, padding: "12px 20px" }}
+              style={{
+                ...s.button,
+                borderRadius: 999,
+                padding: "12px 20px",
+              }}
             >
               Seja Sócio
             </button>
@@ -421,7 +453,14 @@ export default function App() {
       </header>
 
       {menuOpen && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex" }}>
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 50,
+            display: "flex",
+          }}
+        >
           <aside
             style={{
               width: 360,
@@ -479,6 +518,7 @@ export default function App() {
                 </p>
               </div>
             </div>
+
             <nav style={{ padding: 24, display: "grid", gap: 10 }}>
               {menuLateral.map((item) => (
                 <button
@@ -515,6 +555,7 @@ export default function App() {
               ))}
             </nav>
           </aside>
+
           <button
             type="button"
             onClick={() => setMenuOpen(false)}
@@ -601,8 +642,8 @@ export default function App() {
                 lineHeight: 1.7,
               }}
             >
-              Escolha o plano ideal para apoiar o Brasiliense Esporte Clube e viver
-              mais de perto a evolução do clube.
+              Escolha o plano ideal para apoiar o Brasiliense Esporte Clube e
+              viver mais de perto a evolução do clube.
             </p>
 
             <div
@@ -640,21 +681,38 @@ export default function App() {
                         fontSize: 12,
                         textTransform: "uppercase",
                         letterSpacing: ".25em",
-                        color: plano.principal ? "rgba(255,255,255,.7)" : COLORS.muted,
+                        color: plano.principal
+                          ? "rgba(255,255,255,.7)"
+                          : COLORS.muted,
                       }}
                     >
                       {plano.destaque}
                     </p>
-                    <h3 style={{ margin: "14px 0 0", fontSize: 34, fontWeight: 900 }}>
+                    <h3
+                      style={{
+                        margin: "14px 0 0",
+                        fontSize: 34,
+                        fontWeight: 900,
+                      }}
+                    >
                       {plano.nome}
                     </h3>
                     <div
-                      style={{ marginTop: 28, display: "flex", alignItems: "end", gap: 8 }}
+                      style={{
+                        marginTop: 28,
+                        display: "flex",
+                        alignItems: "end",
+                        gap: 8,
+                      }}
                     >
-                      <span style={{ fontSize: 52, fontWeight: 900 }}>{plano.preco}</span>
+                      <span style={{ fontSize: 52, fontWeight: 900 }}>
+                        {plano.preco}
+                      </span>
                       <span
                         style={{
-                          color: plano.principal ? "rgba(255,255,255,.7)" : COLORS.muted,
+                          color: plano.principal
+                            ? "rgba(255,255,255,.7)"
+                            : COLORS.muted,
                         }}
                       >
                         /mês
@@ -664,7 +722,12 @@ export default function App() {
                       {plano.beneficios.map((beneficio) => (
                         <div
                           key={beneficio}
-                          style={{ display: "flex", gap: 10, alignItems: "start", lineHeight: 1.7 }}
+                          style={{
+                            display: "flex",
+                            gap: 10,
+                            alignItems: "start",
+                            lineHeight: 1.7,
+                          }}
                         >
                           <span>✓</span>
                           <span>{beneficio}</span>
@@ -672,6 +735,7 @@ export default function App() {
                       ))}
                     </div>
                   </div>
+
                   <button
                     type="button"
                     style={{
@@ -822,6 +886,7 @@ export default function App() {
             >
               Desde 2022 • Clube poliesportivo
             </span>
+
             <h1
               style={{
                 margin: "24px 0 0",
@@ -834,6 +899,7 @@ export default function App() {
             >
               Formação, performance e identidade esportiva.
             </h1>
+
             <p
               style={{
                 marginTop: 24,
@@ -848,7 +914,10 @@ export default function App() {
               essência e ampliando oportunidades para atletas em diferentes
               modalidades.
             </p>
-            <div style={{ marginTop: 32, display: "flex", gap: 16, flexWrap: "wrap" }}>
+
+            <div
+              style={{ marginTop: 32, display: "flex", gap: 16, flexWrap: "wrap" }}
+            >
               <a href="#conquistas" style={{ ...s.button }}>
                 Ver conquistas
               </a>
@@ -909,6 +978,7 @@ export default function App() {
                 força técnica, competitiva e institucional do BEC.
               </p>
             </div>
+
             <div style={{ ...s.panel, padding: 24 }}>
               <p
                 style={{
@@ -924,6 +994,7 @@ export default function App() {
                 Ano de fundação
               </p>
             </div>
+
             <div style={{ ...s.panel, padding: 24 }}>
               <p
                 style={{
@@ -957,7 +1028,10 @@ export default function App() {
         </div>
       </section>
 
-      <section id="modalidades" style={{ ...s.section, paddingTop: 64, paddingBottom: 64 }}>
+      <section
+        id="modalidades"
+        style={{ ...s.section, paddingTop: 64, paddingBottom: 64 }}
+      >
         <div style={{ maxWidth: 700 }}>
           <p
             style={{
@@ -1437,7 +1511,12 @@ export default function App() {
                 </p>
                 <a
                   href="#"
-                  style={{ ...s.button, display: "block", textAlign: "center", marginTop: 18 }}
+                  style={{
+                    ...s.button,
+                    display: "block",
+                    textAlign: "center",
+                    marginTop: 18,
+                  }}
                 >
                   Comprar
                 </a>
@@ -1503,4 +1582,3 @@ export default function App() {
     </div>
   );
 }
-  
