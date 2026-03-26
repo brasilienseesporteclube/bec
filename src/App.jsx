@@ -11,8 +11,6 @@ const COLORS = {
   border: "#dde7e3",
 };
 
-const asset = (file) => `${import.meta.env.BASE_URL}assets/${file}`;
-
 const modalidades = [
   {
     nome: "Voleibol de Quadra",
@@ -57,7 +55,7 @@ const conquistas = [
     categoria: "Feminino",
     ano: "2023",
     medalha: "🥉",
-    imagem: asset("conquista1.jpeg"),
+    imagem: "/assets/conquista1.jpeg",
     resumo:
       "A conquista que marcou a entrada do clube no cenário nacional e fortaleceu a identidade competitiva do projeto feminino.",
     historia:
@@ -68,7 +66,7 @@ const conquistas = [
     categoria: "Feminino",
     ano: "2025",
     medalha: "🥈",
-    imagem: asset("conquista2.jpeg"),
+    imagem: "/assets/conquista2.jpeg",
     resumo:
       "Campanha consistente que confirmou a força do elenco feminino em competições de alto nível no estado.",
     historia:
@@ -79,7 +77,7 @@ const conquistas = [
     categoria: "Masculino",
     ano: "2025",
     medalha: "🥈",
-    imagem: asset("conquista3.jpeg"),
+    imagem: "/assets/conquista3.jpeg",
     resumo:
       "Resultado que evidenciou a força do elenco masculino e a continuidade do crescimento após o título nacional.",
     historia:
@@ -90,7 +88,7 @@ const conquistas = [
     categoria: "Feminino",
     ano: "2025",
     medalha: "🥉",
-    imagem: asset("conquista4.jpeg"),
+    imagem: "/assets/conquista4.jpeg",
     resumo:
       "Mais uma presença de destaque em competição nacional, reafirmando a solidez do trabalho feminino.",
     historia:
@@ -101,7 +99,7 @@ const conquistas = [
     categoria: "Feminino",
     ano: "2025",
     medalha: "🥇",
-    imagem: asset("conquista5.jpeg"),
+    imagem: "/assets/conquista5.jpeg",
     resumo:
       "Título que simboliza domínio, regularidade e tradição competitiva da equipe feminina.",
     historia:
@@ -112,7 +110,7 @@ const conquistas = [
     categoria: "Feminino",
     ano: "2025",
     medalha: "🥈",
-    imagem: asset("conquista6.jpeg"),
+    imagem: "/assets/conquista6.jpeg",
     resumo:
       "Campanha marcada por dedicação, intensidade e protagonismo em mais uma competição importante.",
     historia:
@@ -123,7 +121,7 @@ const conquistas = [
     categoria: "Masculino",
     ano: "2024",
     medalha: "🥇",
-    imagem: asset("conquista7.jpeg"),
+    imagem: "/assets/conquista7.jpeg",
     resumo:
       "Título histórico que colocou o Brasiliense Esporte Clube no topo da competição e marcou o voleibol masculino do clube.",
     historia:
@@ -476,7 +474,7 @@ export default function App() {
             }}
           >
             <img
-              src={asset("logo.jpeg")}
+              src="/assets/logo.jpeg"
               alt="Brasiliense Esporte Clube"
               style={{
                 height: isMobile ? 62 : 86,
