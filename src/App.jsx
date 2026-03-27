@@ -173,6 +173,10 @@ const planosSocio = [
     nome: "Nação Brasiliense",
     preco: "R$ 19,99",
     destaque: "Apoio ao clube",
+    subtitulo:
+      "Para quem quer começar a fazer parte do clube e apoiar o projeto de forma acessível.",
+    descricao:
+      "O plano Nação Brasiliense é ideal para quem deseja apoiar o Brasiliense Esporte Clube de forma acessível e fazer parte da comunidade oficial de sócios. É a porta de entrada para acompanhar mais de perto o clube, participar de ações exclusivas e viver os bastidores do projeto.",
     beneficios: [
       "Carteirinha digital",
       "Grupo exclusivo",
@@ -181,11 +185,25 @@ const planosSocio = [
       "Participação em clínicas e eventos",
       "1kg de alimento (conforme disponibilidade)",
     ],
+    funcionamento: [
+      "Cobrança mensal recorrente",
+      "Cancelamento simples",
+      "Benefícios liberados após confirmação do pagamento",
+      "Eventos e ações sujeitos à disponibilidade",
+    ],
+    diferencial:
+      "Uma forma acessível e oficial de apoiar o crescimento do clube.",
+    botao: "Quero este plano",
+    whatsappMensagem: "Olá, quero assinar o plano Nação Brasiliense.",
   },
   {
     nome: "Força Brasiliense",
     preco: "R$ 39,99",
     destaque: "Mais proximidade",
+    subtitulo:
+      "Para quem quer mais benefícios, vantagens práticas e maior proximidade com o clube.",
+    descricao:
+      "O plano Força Brasiliense foi pensado para quem deseja ir além do apoio básico e conquistar vantagens extras. Ele amplia a experiência do sócio com descontos, acesso antecipado e maior proximidade com ações e conteúdos exclusivos.",
     beneficios: [
       "Todos os benefícios do plano anterior",
       "Descontos com parceiros",
@@ -194,16 +212,40 @@ const planosSocio = [
       "Acesso antecipado às inscrições",
       "Mais chances de garantir vaga",
     ],
+    funcionamento: [
+      "Cobrança mensal recorrente",
+      "Cancelamento simples",
+      "Benefícios liberados após confirmação do pagamento",
+      "Prioridade em ações e inscrições conforme disponibilidade",
+    ],
+    diferencial:
+      "Mais vantagens práticas e mais proximidade com o dia a dia do clube.",
+    botao: "Quero este plano",
+    whatsappMensagem: "Olá, quero assinar o plano Força Brasiliense.",
   },
   {
     nome: "Orgulho Brasiliense",
     preco: "R$ 59,99",
     destaque: "Experiência completa",
+    subtitulo:
+      "Para quem quer a experiência mais completa, com reconhecimento especial e prioridade máxima.",
+    descricao:
+      "O plano Orgulho Brasiliense é a opção mais completa do programa. Além de reunir todos os benefícios anteriores, ele oferece reconhecimento especial e prioridade máxima nas ações do clube, fortalecendo a ligação do sócio com a história e o futuro do Brasiliense Esporte Clube.",
     beneficios: [
       "Todos os benefícios anteriores",
       "Nome como Sócio Fundador",
       "Prioridade máxima nas ações",
     ],
+    funcionamento: [
+      "Cobrança mensal recorrente",
+      "Cancelamento simples",
+      "Benefícios liberados após confirmação do pagamento",
+      "Prioridade máxima conforme disponibilidade das ações",
+    ],
+    diferencial:
+      "O plano mais completo, com reconhecimento e prioridade máxima.",
+    botao: "Quero este plano",
+    whatsappMensagem: "Olá, quero assinar o plano Orgulho Brasiliense.",
     principal: true,
   },
 ];
@@ -218,7 +260,7 @@ const menuLateral = [
   { label: "Programa de Sócios", href: "#socio" },
 ];
 
-function Counter({ end, label }) {
+function Counter({ end, label, isMobile }) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -242,7 +284,7 @@ function Counter({ end, label }) {
         border: `1px solid ${COLORS.border}`,
         background: COLORS.card,
         borderRadius: 28,
-        padding: 24,
+        padding: isMobile ? 20 : 24,
         boxShadow: "0 10px 30px rgba(19,50,46,.06)",
       }}
     >
@@ -251,7 +293,7 @@ function Counter({ end, label }) {
           margin: 0,
           color: COLORS.primaryDark,
           fontWeight: 900,
-          fontSize: 42,
+          fontSize: isMobile ? 34 : 42,
         }}
       >
         {count}
@@ -310,6 +352,19 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [socioOpen, setSocioOpen] = useState(false);
   const [conquistaAtiva, setConquistaAtiva] = useState(null);
+  const [planoAtivo, setPlanoAtivo] = useState(null);
+  const [viewportWidth, setViewportWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1280
+  );
+
+  useEffect(() => {
+    const handleResize = () => setViewportWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const isMobile = viewportWidth < 768;
+  const isTablet = viewportWidth >= 768 && viewportWidth < 1100;
 
   const handleMenuItemClick = (item) => {
     setMenuOpen(false);
@@ -341,7 +396,7 @@ export default function App() {
             alignItems: "center",
             paddingTop: 12,
             paddingBottom: 12,
-            gap: 16,
+            gap: isMobile ? 10 : 16,
           }}
         >
           <nav
@@ -355,13 +410,13 @@ export default function App() {
               onClick={() => setMenuOpen(true)}
               aria-label="Abrir menu"
               style={{
-                width: 46,
-                height: 46,
+                width: isMobile ? 42 : 46,
+                height: isMobile ? 42 : 46,
                 borderRadius: 999,
                 border: `1px solid ${COLORS.border}`,
                 background: COLORS.soft,
                 color: COLORS.primaryDark,
-                fontSize: 20,
+                fontSize: isMobile ? 18 : 20,
                 cursor: "pointer",
                 fontWeight: 700,
               }}
@@ -383,7 +438,7 @@ export default function App() {
               src="/assets/logo.jpeg"
               alt="Brasiliense Esporte Clube"
               style={{
-                height: 86,
+                height: isMobile ? 58 : 86,
                 width: "auto",
                 objectFit: "contain",
                 display: "block",
@@ -395,8 +450,9 @@ export default function App() {
             style={{
               display: "flex",
               alignItems: "center",
-              gap: 16,
+              gap: isMobile ? 8 : 16,
               justifyContent: "flex-end",
+              flexWrap: "wrap",
             }}
           >
             <a
@@ -404,7 +460,9 @@ export default function App() {
               style={{
                 ...s.button,
                 borderRadius: 999,
-                padding: "12px 20px",
+                padding: isMobile ? "10px 14px" : "12px 20px",
+                fontSize: isMobile ? 14 : 16,
+                whiteSpace: "nowrap",
               }}
             >
               Loja
@@ -416,7 +474,9 @@ export default function App() {
               style={{
                 ...s.button,
                 borderRadius: 999,
-                padding: "12px 20px",
+                padding: isMobile ? "10px 14px" : "12px 20px",
+                fontSize: isMobile ? 14 : 16,
+                whiteSpace: "nowrap",
               }}
             >
               Seja Sócio
@@ -436,7 +496,7 @@ export default function App() {
         >
           <aside
             style={{
-              width: 360,
+              width: isMobile ? "88vw" : 360,
               maxWidth: "88vw",
               background: "white",
               color: COLORS.text,
@@ -558,10 +618,12 @@ export default function App() {
             <div
               style={{
                 display: "flex",
-                alignItems: "center",
+                alignItems: isMobile ? "start" : "center",
                 justifyContent: "space-between",
+                gap: 16,
                 borderBottom: `1px solid ${COLORS.border}`,
                 paddingBottom: 20,
+                flexDirection: isMobile ? "column" : "row",
               }}
             >
               <div>
@@ -579,7 +641,7 @@ export default function App() {
                 <h2
                   style={{
                     margin: "10px 0 0",
-                    fontSize: 48,
+                    fontSize: isMobile ? 34 : 48,
                     lineHeight: 1,
                     fontWeight: 900,
                     color: COLORS.primaryDark,
@@ -600,6 +662,7 @@ export default function App() {
                   color: COLORS.primaryDark,
                   fontSize: 22,
                   cursor: "pointer",
+                  alignSelf: isMobile ? "flex-end" : "auto",
                 }}
               >
                 ✕
@@ -611,7 +674,7 @@ export default function App() {
                 marginTop: 24,
                 maxWidth: 760,
                 color: COLORS.muted,
-                fontSize: 20,
+                fontSize: isMobile ? 17 : 20,
                 lineHeight: 1.7,
               }}
             >
@@ -623,7 +686,11 @@ export default function App() {
               style={{
                 marginTop: 40,
                 display: "grid",
-                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                gridTemplateColumns: isMobile
+                  ? "1fr"
+                  : isTablet
+                  ? "repeat(2, minmax(0, 1fr))"
+                  : "repeat(3, minmax(0, 1fr))",
                 gap: 24,
               }}
             >
@@ -640,11 +707,11 @@ export default function App() {
                       : `1px solid ${COLORS.border}`,
                     background: plano.principal ? COLORS.primaryDark : COLORS.card,
                     color: plano.principal ? "white" : COLORS.text,
-                    padding: 32,
+                    padding: isMobile ? 24 : 32,
                     boxShadow: plano.principal
                       ? "0 24px 60px rgba(0,0,0,.18)"
                       : "0 10px 30px rgba(19,50,46,.06)",
-                    transform: plano.principal ? "scale(1.03)" : "none",
+                    transform: !isMobile && plano.principal ? "scale(1.03)" : "none",
                   }}
                 >
                   <div>
@@ -664,7 +731,7 @@ export default function App() {
                     <h3
                       style={{
                         margin: "14px 0 0",
-                        fontSize: 34,
+                        fontSize: isMobile ? 28 : 34,
                         fontWeight: 900,
                       }}
                     >
@@ -676,9 +743,10 @@ export default function App() {
                         display: "flex",
                         alignItems: "end",
                         gap: 8,
+                        flexWrap: "wrap",
                       }}
                     >
-                      <span style={{ fontSize: 52, fontWeight: 900 }}>
+                      <span style={{ fontSize: isMobile ? 42 : 52, fontWeight: 900 }}>
                         {plano.preco}
                       </span>
                       <span
@@ -700,6 +768,7 @@ export default function App() {
                             gap: 10,
                             alignItems: "start",
                             lineHeight: 1.7,
+                            fontSize: isMobile ? 14 : 16,
                           }}
                         >
                           <span>✓</span>
@@ -711,6 +780,7 @@ export default function App() {
 
                   <button
                     type="button"
+                    onClick={() => setPlanoAtivo(plano)}
                     style={{
                       marginTop: 28,
                       borderRadius: 999,
@@ -742,7 +812,7 @@ export default function App() {
             justifyContent: "center",
             background: "rgba(8, 20, 18, 0.82)",
             backdropFilter: "blur(8px)",
-            padding: 20,
+            padding: isMobile ? 12 : 20,
             animation: "fadeIn .25s ease",
           }}
           onClick={() => setConquistaAtiva(null)}
@@ -751,12 +821,13 @@ export default function App() {
             style={{
               width: "100%",
               maxWidth: 1120,
-              overflow: "hidden",
-              borderRadius: 36,
+              maxHeight: "94vh",
+              overflowY: "auto",
+              overflowX: "hidden",
+              borderRadius: isMobile ? 24 : 36,
               border: `1px solid ${COLORS.border}`,
               background: COLORS.card,
               boxShadow: "0 30px 80px rgba(0,0,0,.35)",
-              transform: "translateY(0)",
               animation: "scaleIn .28s ease",
               position: "relative",
             }}
@@ -767,16 +838,16 @@ export default function App() {
               onClick={() => setConquistaAtiva(null)}
               style={{
                 position: "absolute",
-                top: 18,
-                right: 18,
+                top: 14,
+                right: 14,
                 zIndex: 2,
-                width: 46,
-                height: 46,
+                width: 42,
+                height: 42,
                 borderRadius: 999,
                 border: "1px solid rgba(255,255,255,.35)",
                 background: "rgba(0,0,0,.28)",
                 color: "white",
-                fontSize: 22,
+                fontSize: 20,
                 cursor: "pointer",
                 backdropFilter: "blur(8px)",
               }}
@@ -787,8 +858,8 @@ export default function App() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr .9fr",
-                minHeight: 620,
+                gridTemplateColumns: isMobile ? "1fr" : "1fr .9fr",
+                minHeight: isMobile ? "auto" : 620,
               }}
             >
               <div
@@ -798,7 +869,8 @@ export default function App() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  padding: 24,
+                  padding: isMobile ? 16 : 24,
+                  minHeight: isMobile ? 320 : "auto",
                 }}
               >
                 <img
@@ -807,7 +879,7 @@ export default function App() {
                   style={{
                     width: "100%",
                     height: "100%",
-                    maxHeight: 620,
+                    maxHeight: isMobile ? 360 : 620,
                     objectFit: "contain",
                     display: "block",
                     borderRadius: 20,
@@ -816,27 +888,30 @@ export default function App() {
                 <div
                   style={{
                     position: "absolute",
-                    left: 24,
-                    bottom: 24,
+                    left: 20,
+                    bottom: 20,
                     display: "inline-flex",
                     alignItems: "center",
                     gap: 10,
                     borderRadius: 999,
                     background: "rgba(255,255,255,.88)",
                     color: COLORS.primaryDark,
-                    padding: "12px 18px",
+                    padding: isMobile ? "10px 14px" : "12px 18px",
                     fontWeight: 800,
                     boxShadow: "0 10px 30px rgba(0,0,0,.16)",
+                    fontSize: isMobile ? 14 : 16,
                   }}
                 >
-                  <span style={{ fontSize: 22 }}>{conquistaAtiva.medalha}</span>
+                  <span style={{ fontSize: isMobile ? 18 : 22 }}>
+                    {conquistaAtiva.medalha}
+                  </span>
                   <span>Conquista oficial</span>
                 </div>
               </div>
 
               <div
                 style={{
-                  padding: 42,
+                  padding: isMobile ? 24 : 42,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
@@ -855,6 +930,7 @@ export default function App() {
                     borderRadius: 999,
                     fontWeight: 800,
                     letterSpacing: ".04em",
+                    fontSize: isMobile ? 14 : 16,
                   }}
                 >
                   <span>{conquistaAtiva.medalha}</span>
@@ -877,7 +953,7 @@ export default function App() {
                 <h3
                   style={{
                     margin: "12px 0 0",
-                    fontSize: 44,
+                    fontSize: isMobile ? 30 : 44,
                     lineHeight: 1.08,
                     fontWeight: 900,
                     color: COLORS.primaryDark,
@@ -899,7 +975,7 @@ export default function App() {
 
                 <div
                   style={{
-                    padding: 24,
+                    padding: isMobile ? 20 : 24,
                     borderRadius: 24,
                     background: "white",
                     border: `1px solid ${COLORS.border}`,
@@ -923,7 +999,7 @@ export default function App() {
                     style={{
                       marginTop: 16,
                       color: COLORS.text,
-                      fontSize: 19,
+                      fontSize: isMobile ? 16 : 19,
                       lineHeight: 1.85,
                     }}
                   >
@@ -943,6 +1019,372 @@ export default function App() {
                   galeria.
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {planoAtivo && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 80,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "rgba(8, 20, 18, 0.78)",
+            backdropFilter: "blur(8px)",
+            padding: isMobile ? 12 : 20,
+            animation: "fadeIn .25s ease",
+          }}
+          onClick={() => setPlanoAtivo(null)}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: 980,
+              maxHeight: "94vh",
+              overflowY: "auto",
+              borderRadius: isMobile ? 24 : 36,
+              border: `1px solid ${COLORS.border}`,
+              background: COLORS.card,
+              boxShadow: "0 30px 80px rgba(0,0,0,.35)",
+              position: "relative",
+              animation: "scaleIn .28s ease",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setPlanoAtivo(null)}
+              style={{
+                position: "absolute",
+                top: 14,
+                right: 14,
+                zIndex: 2,
+                width: 42,
+                height: 42,
+                borderRadius: 999,
+                border: "1px solid rgba(255,255,255,.2)",
+                background: "rgba(0,0,0,.22)",
+                color: "white",
+                fontSize: 20,
+                cursor: "pointer",
+                backdropFilter: "blur(8px)",
+              }}
+            >
+              ✕
+            </button>
+
+            <div
+              style={{
+                padding: isMobile ? 24 : 40,
+                background: planoAtivo.principal
+                  ? `linear-gradient(135deg, ${COLORS.primaryDark}, ${COLORS.primary})`
+                  : "linear-gradient(135deg, #f8fbfa, #eef6f3)",
+                color: planoAtivo.principal ? "white" : COLORS.text,
+              }}
+            >
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 10,
+                  borderRadius: 999,
+                  padding: "10px 16px",
+                  fontWeight: 800,
+                  fontSize: 12,
+                  textTransform: "uppercase",
+                  letterSpacing: ".18em",
+                  background: planoAtivo.principal
+                    ? "rgba(255,255,255,.16)"
+                    : `${COLORS.primary}16`,
+                  color: planoAtivo.principal ? "white" : COLORS.primaryDark,
+                }}
+              >
+                {planoAtivo.destaque}
+              </div>
+
+              <h2
+                style={{
+                  margin: "18px 0 0",
+                  fontSize: isMobile ? 32 : 46,
+                  lineHeight: 1.05,
+                  fontWeight: 900,
+                  color: planoAtivo.principal ? "white" : COLORS.primaryDark,
+                }}
+              >
+                {planoAtivo.nome}
+              </h2>
+
+              <div
+                style={{
+                  marginTop: 18,
+                  display: "flex",
+                  alignItems: "end",
+                  gap: 8,
+                  flexWrap: "wrap",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: isMobile ? 40 : 52,
+                    fontWeight: 900,
+                    color: planoAtivo.principal ? "white" : COLORS.primaryDark,
+                  }}
+                >
+                  {planoAtivo.preco}
+                </span>
+                <span
+                  style={{
+                    color: planoAtivo.principal
+                      ? "rgba(255,255,255,.78)"
+                      : COLORS.muted,
+                    marginBottom: 8,
+                  }}
+                >
+                  /mês
+                </span>
+              </div>
+
+              <p
+                style={{
+                  marginTop: 18,
+                  maxWidth: 760,
+                  fontSize: isMobile ? 17 : 20,
+                  lineHeight: 1.7,
+                  color: planoAtivo.principal
+                    ? "rgba(255,255,255,.88)"
+                    : COLORS.muted,
+                }}
+              >
+                {planoAtivo.subtitulo}
+              </p>
+            </div>
+
+            <div
+              style={{
+                padding: isMobile ? 24 : 40,
+                display: "grid",
+                gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+                gap: 24,
+              }}
+            >
+              <div
+                style={{
+                  padding: isMobile ? 20 : 28,
+                  borderRadius: 28,
+                  border: `1px solid ${COLORS.border}`,
+                  background: "white",
+                  boxShadow: "0 10px 24px rgba(19,50,46,.05)",
+                }}
+              >
+                <p
+                  style={{
+                    margin: 0,
+                    fontSize: 12,
+                    textTransform: "uppercase",
+                    letterSpacing: ".24em",
+                    color: COLORS.muted,
+                    fontWeight: 700,
+                  }}
+                >
+                  Sobre o plano
+                </p>
+
+                <p
+                  style={{
+                    marginTop: 16,
+                    fontSize: isMobile ? 16 : 18,
+                    lineHeight: 1.8,
+                    color: COLORS.text,
+                  }}
+                >
+                  {planoAtivo.descricao}
+                </p>
+
+                <div
+                  style={{
+                    width: 72,
+                    height: 4,
+                    borderRadius: 999,
+                    background: `linear-gradient(135deg, ${COLORS.primary}, ${COLORS.primaryDark})`,
+                    marginTop: 20,
+                    marginBottom: 20,
+                  }}
+                />
+
+                <p
+                  style={{
+                    margin: 0,
+                    fontSize: 12,
+                    textTransform: "uppercase",
+                    letterSpacing: ".24em",
+                    color: COLORS.muted,
+                    fontWeight: 700,
+                  }}
+                >
+                  Diferencial
+                </p>
+
+                <p
+                  style={{
+                    marginTop: 16,
+                    fontSize: isMobile ? 16 : 18,
+                    lineHeight: 1.8,
+                    color: COLORS.text,
+                    fontWeight: 600,
+                  }}
+                >
+                  {planoAtivo.diferencial}
+                </p>
+              </div>
+
+              <div style={{ display: "grid", gap: 24 }}>
+                <div
+                  style={{
+                    padding: isMobile ? 20 : 28,
+                    borderRadius: 28,
+                    border: `1px solid ${COLORS.border}`,
+                    background: "white",
+                    boxShadow: "0 10px 24px rgba(19,50,46,.05)",
+                  }}
+                >
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: 12,
+                      textTransform: "uppercase",
+                      letterSpacing: ".24em",
+                      color: COLORS.muted,
+                      fontWeight: 700,
+                    }}
+                  >
+                    O que está incluso
+                  </p>
+
+                  <div style={{ marginTop: 18, display: "grid", gap: 14 }}>
+                    {planoAtivo.beneficios.map((beneficio) => (
+                      <div
+                        key={beneficio}
+                        style={{
+                          display: "flex",
+                          gap: 10,
+                          alignItems: "start",
+                          lineHeight: 1.7,
+                          color: COLORS.text,
+                          fontSize: isMobile ? 15 : 16,
+                        }}
+                      >
+                        <span
+                          style={{
+                            color: COLORS.primaryDark,
+                            fontWeight: 900,
+                          }}
+                        >
+                          ✓
+                        </span>
+                        <span>{beneficio}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    padding: isMobile ? 20 : 28,
+                    borderRadius: 28,
+                    border: `1px solid ${COLORS.border}`,
+                    background: "white",
+                    boxShadow: "0 10px 24px rgba(19,50,46,.05)",
+                  }}
+                >
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: 12,
+                      textTransform: "uppercase",
+                      letterSpacing: ".24em",
+                      color: COLORS.muted,
+                      fontWeight: 700,
+                    }}
+                  >
+                    Como funciona
+                  </p>
+
+                  <div style={{ marginTop: 18, display: "grid", gap: 14 }}>
+                    {planoAtivo.funcionamento.map((item) => (
+                      <div
+                        key={item}
+                        style={{
+                          display: "flex",
+                          gap: 10,
+                          alignItems: "start",
+                          lineHeight: 1.7,
+                          color: COLORS.text,
+                          fontSize: isMobile ? 15 : 16,
+                        }}
+                      >
+                        <span
+                          style={{
+                            color: COLORS.primaryDark,
+                            fontWeight: 900,
+                          }}
+                        >
+                          •
+                        </span>
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              style={{
+                padding: isMobile ? "0 24px 24px" : "0 40px 40px",
+                display: "grid",
+                gridTemplateColumns: isMobile ? "1fr" : "repeat(2, max-content)",
+                gap: 16,
+              }}
+            >
+              <a
+                href={`https://wa.me/5561982345878?text=${encodeURIComponent(
+                  planoAtivo.whatsappMensagem
+                )}`}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  ...s.button,
+                  borderRadius: 999,
+                  padding: "16px 28px",
+                  textAlign: "center",
+                }}
+              >
+                {planoAtivo.botao}
+              </a>
+
+              <a
+                href={`https://wa.me/5561982345878?text=${encodeURIComponent(
+                  `Olá, tenho dúvidas sobre o plano ${planoAtivo.nome}.`
+                )}`}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  borderRadius: 999,
+                  border: `1px solid ${COLORS.border}`,
+                  background: "white",
+                  color: COLORS.text,
+                  padding: "16px 28px",
+                  fontWeight: 800,
+                  textDecoration: "none",
+                  textAlign: "center",
+                }}
+              >
+                Tirar dúvidas no WhatsApp
+              </a>
             </div>
           </div>
         </div>
@@ -968,11 +1410,11 @@ export default function App() {
             ...s.section,
             position: "relative",
             display: "grid",
-            gridTemplateColumns: "1.1fr .9fr",
-            gap: 48,
+            gridTemplateColumns: isMobile ? "1fr" : "1.1fr .9fr",
+            gap: isMobile ? 28 : 48,
             alignItems: "center",
-            paddingTop: 80,
-            paddingBottom: 80,
+            paddingTop: isMobile ? 48 : 80,
+            paddingBottom: isMobile ? 48 : 80,
           }}
         >
           <div>
@@ -994,7 +1436,7 @@ export default function App() {
               style={{
                 margin: "24px 0 0",
                 maxWidth: 760,
-                fontSize: 72,
+                fontSize: isMobile ? 44 : 72,
                 lineHeight: 1.02,
                 fontWeight: 900,
                 color: COLORS.primaryDark,
@@ -1007,7 +1449,7 @@ export default function App() {
               style={{
                 marginTop: 24,
                 maxWidth: 760,
-                fontSize: 21,
+                fontSize: isMobile ? 17 : 21,
                 lineHeight: 1.7,
                 color: COLORS.muted,
               }}
@@ -1019,9 +1461,22 @@ export default function App() {
             </p>
 
             <div
-              style={{ marginTop: 32, display: "flex", gap: 16, flexWrap: "wrap" }}
+              style={{
+                marginTop: 32,
+                display: "flex",
+                gap: 16,
+                flexWrap: "wrap",
+                flexDirection: isMobile ? "column" : "row",
+              }}
             >
-              <a href="#conquistas" style={{ ...s.button }}>
+              <a
+                href="#conquistas"
+                style={{
+                  ...s.button,
+                  textAlign: "center",
+                  width: isMobile ? "100%" : "auto",
+                }}
+              >
                 Ver conquistas
               </a>
               <a
@@ -1034,6 +1489,8 @@ export default function App() {
                   padding: "14px 24px",
                   fontWeight: 700,
                   textDecoration: "none",
+                  textAlign: "center",
+                  width: isMobile ? "100%" : "auto",
                 }}
               >
                 Quero treinar no clube
@@ -1048,7 +1505,7 @@ export default function App() {
               gap: 16,
             }}
           >
-            <div style={{ ...s.panel, gridColumn: "span 2", padding: 24 }}>
+            <div style={{ ...s.panel, gridColumn: "span 2", padding: isMobile ? 20 : 24 }}>
               <p
                 style={{
                   margin: 0,
@@ -1063,7 +1520,7 @@ export default function App() {
               <h2
                 style={{
                   margin: "12px 0 0",
-                  fontSize: 34,
+                  fontSize: isMobile ? 28 : 34,
                   fontWeight: 900,
                   color: COLORS.primaryDark,
                 }}
@@ -1075,6 +1532,7 @@ export default function App() {
                   margin: "12px 0 0",
                   lineHeight: 1.7,
                   color: COLORS.muted,
+                  fontSize: isMobile ? 15 : 16,
                 }}
               >
                 A modalidade que iniciou a história do clube segue como a
@@ -1082,34 +1540,34 @@ export default function App() {
               </p>
             </div>
 
-            <div style={{ ...s.panel, padding: 24 }}>
+            <div style={{ ...s.panel, padding: isMobile ? 20 : 24 }}>
               <p
                 style={{
                   margin: 0,
-                  fontSize: 42,
+                  fontSize: isMobile ? 34 : 42,
                   fontWeight: 900,
                   color: COLORS.primaryDark,
                 }}
               >
                 2022
               </p>
-              <p style={{ margin: "8px 0 0", color: COLORS.muted }}>
+              <p style={{ margin: "8px 0 0", color: COLORS.muted, fontSize: isMobile ? 14 : 16 }}>
                 Ano de fundação
               </p>
             </div>
 
-            <div style={{ ...s.panel, padding: 24 }}>
+            <div style={{ ...s.panel, padding: isMobile ? 20 : 24 }}>
               <p
                 style={{
                   margin: 0,
-                  fontSize: 42,
+                  fontSize: isMobile ? 34 : 42,
                   fontWeight: 900,
                   color: COLORS.primaryDark,
                 }}
               >
                 4
               </p>
-              <p style={{ margin: "8px 0 0", color: COLORS.muted }}>
+              <p style={{ margin: "8px 0 0", color: COLORS.muted, fontSize: isMobile ? 14 : 16 }}>
                 Modalidades ativas
               </p>
             </div>
@@ -1117,23 +1575,25 @@ export default function App() {
         </div>
       </section>
 
-      <section style={{ ...s.section, paddingTop: 64, paddingBottom: 64 }}>
+      <section style={{ ...s.section, paddingTop: isMobile ? 40 : 64, paddingBottom: isMobile ? 40 : 64 }}>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+            gridTemplateColumns: isMobile
+              ? "repeat(2, minmax(0, 1fr))"
+              : "repeat(4, minmax(0, 1fr))",
             gap: 20,
           }}
         >
           {contadores.map((item) => (
-            <Counter key={item.label} end={item.value} label={item.label} />
+            <Counter key={item.label} end={item.value} label={item.label} isMobile={isMobile} />
           ))}
         </div>
       </section>
 
       <section
         id="modalidades"
-        style={{ ...s.section, paddingTop: 64, paddingBottom: 64 }}
+        style={{ ...s.section, paddingTop: isMobile ? 40 : 64, paddingBottom: isMobile ? 40 : 64 }}
       >
         <div style={{ maxWidth: 700 }}>
           <p
@@ -1150,7 +1610,7 @@ export default function App() {
           <h2
             style={{
               margin: "12px 0 0",
-              fontSize: 52,
+              fontSize: isMobile ? 36 : 52,
               fontWeight: 900,
               color: COLORS.primaryDark,
             }}
@@ -1163,17 +1623,23 @@ export default function App() {
           style={{
             marginTop: 40,
             display: "grid",
-            gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+            gridTemplateColumns: isMobile
+              ? "1fr"
+              : isTablet
+              ? "repeat(2, minmax(0, 1fr))"
+              : "repeat(4, minmax(0, 1fr))",
             gap: 24,
           }}
         >
           {modalidades.map((item) => (
-            <div key={item.nome} style={{ ...s.panel, padding: 24 }}>
+            <div key={item.nome} style={{ ...s.panel, padding: isMobile ? 20 : 24 }}>
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
+                  gap: 10,
+                  flexWrap: "wrap",
                 }}
               >
                 <span style={{ fontSize: 30 }}>{item.icone}</span>
@@ -1194,7 +1660,7 @@ export default function App() {
               <h3
                 style={{
                   margin: "20px 0 0",
-                  fontSize: 30,
+                  fontSize: isMobile ? 26 : 30,
                   fontWeight: 900,
                   color: COLORS.primaryDark,
                 }}
@@ -1206,6 +1672,7 @@ export default function App() {
                   margin: "12px 0 0",
                   lineHeight: 1.7,
                   color: COLORS.muted,
+                  fontSize: isMobile ? 15 : 16,
                 }}
               >
                 {item.descricao}
@@ -1223,7 +1690,7 @@ export default function App() {
           background: COLORS.soft,
         }}
       >
-        <div style={{ ...s.section, paddingTop: 80, paddingBottom: 80 }}>
+        <div style={{ ...s.section, paddingTop: isMobile ? 56 : 80, paddingBottom: isMobile ? 56 : 80 }}>
           <div style={{ maxWidth: 760 }}>
             <p
               style={{
@@ -1239,7 +1706,7 @@ export default function App() {
             <h2
               style={{
                 margin: "12px 0 0",
-                fontSize: 52,
+                fontSize: isMobile ? 36 : 52,
                 fontWeight: 900,
                 color: COLORS.primaryDark,
               }}
@@ -1252,7 +1719,11 @@ export default function App() {
             style={{
               marginTop: 48,
               display: "grid",
-              gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+              gridTemplateColumns: isMobile
+                ? "1fr"
+                : isTablet
+                ? "repeat(2, minmax(0, 1fr))"
+                : "repeat(3, minmax(0, 1fr))",
               gap: 20,
             }}
           >
@@ -1274,14 +1745,18 @@ export default function App() {
                   transition: "transform .22s ease, box-shadow .22s ease",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.boxShadow =
-                    "0 18px 40px rgba(19,50,46,.12)";
+                  if (!isMobile) {
+                    e.currentTarget.style.transform = "translateY(-4px)";
+                    e.currentTarget.style.boxShadow =
+                      "0 18px 40px rgba(19,50,46,.12)";
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow =
-                    "0 10px 30px rgba(19,50,46,.06)";
+                  if (!isMobile) {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow =
+                      "0 10px 30px rgba(19,50,46,.06)";
+                  }
                 }}
               >
                 <div style={{ position: "relative", height: 224, overflow: "hidden" }}>
@@ -1332,7 +1807,7 @@ export default function App() {
                   <h3
                     style={{
                       margin: "12px 0 0",
-                      fontSize: 24,
+                      fontSize: isMobile ? 22 : 24,
                       fontWeight: 900,
                       lineHeight: 1.2,
                       color: COLORS.primaryDark,
@@ -1352,7 +1827,7 @@ export default function App() {
 
       <section
         id="timeline"
-        style={{ ...s.section, paddingTop: 80, paddingBottom: 80 }}
+        style={{ ...s.section, paddingTop: isMobile ? 56 : 80, paddingBottom: isMobile ? 56 : 80 }}
       >
         <div style={{ maxWidth: 760 }}>
           <p
@@ -1369,7 +1844,7 @@ export default function App() {
           <h2
             style={{
               margin: "12px 0 0",
-              fontSize: 52,
+              fontSize: isMobile ? 36 : 52,
               fontWeight: 900,
               color: COLORS.primaryDark,
             }}
@@ -1382,7 +1857,11 @@ export default function App() {
           style={{
             marginTop: 56,
             display: "grid",
-            gridTemplateColumns: "repeat(5, minmax(0, 1fr))",
+            gridTemplateColumns: isMobile
+              ? "1fr"
+              : isTablet
+              ? "repeat(2, minmax(0, 1fr))"
+              : "repeat(5, minmax(0, 1fr))",
             gap: 24,
           }}
         >
@@ -1430,6 +1909,7 @@ export default function App() {
                   margin: "10px 0 0",
                   lineHeight: 1.6,
                   color: COLORS.muted,
+                  fontSize: isMobile ? 15 : 16,
                 }}
               >
                 {item.resumo}
@@ -1439,7 +1919,7 @@ export default function App() {
         </div>
       </section>
 
-      <section id="treinar" style={{ ...s.section, paddingBottom: 80 }}>
+      <section id="treinar" style={{ ...s.section, paddingBottom: isMobile ? 56 : 80 }}>
         <div
           style={{
             borderRadius: 36,
@@ -1451,9 +1931,9 @@ export default function App() {
             style={{
               borderRadius: 35,
               background: COLORS.primaryDark,
-              padding: 40,
+              padding: isMobile ? 24 : 40,
               display: "grid",
-              gridTemplateColumns: "1fr auto",
+              gridTemplateColumns: isMobile ? "1fr" : "1fr auto",
               gap: 32,
               alignItems: "center",
             }}
@@ -1473,7 +1953,7 @@ export default function App() {
               <h2
                 style={{
                   margin: "12px 0 0",
-                  fontSize: 52,
+                  fontSize: isMobile ? 34 : 52,
                   fontWeight: 900,
                   color: "white",
                 }}
@@ -1484,7 +1964,7 @@ export default function App() {
                 style={{
                   margin: "18px 0 0",
                   maxWidth: 720,
-                  fontSize: 20,
+                  fontSize: isMobile ? 17 : 20,
                   lineHeight: 1.7,
                   color: "rgba(255,255,255,.78)",
                 }}
@@ -1496,7 +1976,7 @@ export default function App() {
 
             <div style={{ display: "grid", gap: 14 }}>
               <a
-                href="https://wa.me/5500000000000"
+                href="https://wa.me/5561982345878"
                 style={{ ...s.button, textAlign: "center" }}
               >
                 Falar no WhatsApp
@@ -1525,7 +2005,7 @@ export default function App() {
 
       <section
         id="loja"
-        style={{ ...s.section, paddingTop: 80, paddingBottom: 80 }}
+        style={{ ...s.section, paddingTop: isMobile ? 56 : 80, paddingBottom: isMobile ? 56 : 80 }}
       >
         <div style={{ maxWidth: 760 }}>
           <p
@@ -1542,7 +2022,7 @@ export default function App() {
           <h2
             style={{
               margin: "12px 0 0",
-              fontSize: 52,
+              fontSize: isMobile ? 36 : 52,
               fontWeight: 900,
               color: COLORS.primaryDark,
             }}
@@ -1552,7 +2032,7 @@ export default function App() {
           <p
             style={{
               margin: "18px 0 0",
-              fontSize: 20,
+              fontSize: isMobile ? 17 : 20,
               lineHeight: 1.7,
               color: COLORS.muted,
             }}
@@ -1566,7 +2046,11 @@ export default function App() {
           style={{
             marginTop: 48,
             display: "grid",
-            gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+            gridTemplateColumns: isMobile
+              ? "1fr"
+              : isTablet
+              ? "repeat(2, minmax(0, 1fr))"
+              : "repeat(4, minmax(0, 1fr))",
             gap: 24,
           }}
         >
@@ -1612,7 +2096,7 @@ export default function App() {
                 <h3
                   style={{
                     margin: "16px 0 0",
-                    fontSize: 28,
+                    fontSize: isMobile ? 24 : 28,
                     fontWeight: 900,
                     color: COLORS.primaryDark,
                   }}
@@ -1648,14 +2132,14 @@ export default function App() {
 
       <section
         id="socio"
-        style={{ ...s.section, paddingTop: 80, paddingBottom: 80 }}
+        style={{ ...s.section, paddingTop: isMobile ? 56 : 80, paddingBottom: isMobile ? 56 : 80 }}
       >
         <div
           style={{
             borderRadius: 32,
             border: `1px solid ${COLORS.border}`,
             background: COLORS.primaryDark,
-            padding: 32,
+            padding: isMobile ? 24 : 32,
             textAlign: "center",
             boxShadow: "0 10px 30px rgba(19,50,46,.08)",
           }}
@@ -1674,7 +2158,7 @@ export default function App() {
           <h2
             style={{
               margin: "12px 0 0",
-              fontSize: 52,
+              fontSize: isMobile ? 34 : 52,
               fontWeight: 900,
               color: "white",
             }}
@@ -1685,7 +2169,7 @@ export default function App() {
             style={{
               margin: "18px auto 0",
               maxWidth: 760,
-              fontSize: 20,
+              fontSize: isMobile ? 17 : 20,
               lineHeight: 1.7,
               color: "rgba(255,255,255,.78)",
             }}
@@ -1704,6 +2188,18 @@ export default function App() {
       </section>
 
       <style>{`
+        * {
+          box-sizing: border-box;
+        }
+
+        html {
+          scroll-behavior: smooth;
+        }
+
+        body {
+          margin: 0;
+        }
+
         @keyframes fadeIn {
           from {
             opacity: 0;
