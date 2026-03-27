@@ -781,25 +781,58 @@ export default function App() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: "rgba(0,0,0,.8)",
-            padding: 16,
+            background: "rgba(8, 20, 18, 0.82)",
+            backdropFilter: "blur(8px)",
+            padding: 20,
+            animation: "fadeIn .25s ease",
           }}
           onClick={() => setConquistaAtiva(null)}
         >
           <div
             style={{
               width: "100%",
-              maxWidth: 1100,
+              maxWidth: 1120,
               overflow: "hidden",
-              borderRadius: 32,
+              borderRadius: 36,
               border: `1px solid ${COLORS.border}`,
               background: COLORS.card,
-              boxShadow: "0 24px 60px rgba(0,0,0,.35)",
+              boxShadow: "0 30px 80px rgba(0,0,0,.35)",
+              transform: "translateY(0)",
+              animation: "scaleIn .28s ease",
+              position: "relative",
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ display: "grid", gridTemplateColumns: "1.2fr .8fr" }}>
-              <div>
+            <button
+              type="button"
+              onClick={() => setConquistaAtiva(null)}
+              style={{
+                position: "absolute",
+                top: 18,
+                right: 18,
+                zIndex: 2,
+                width: 46,
+                height: 46,
+                borderRadius: 999,
+                border: "1px solid rgba(255,255,255,.35)",
+                background: "rgba(0,0,0,.28)",
+                color: "white",
+                fontSize: 22,
+                cursor: "pointer",
+                backdropFilter: "blur(8px)",
+              }}
+            >
+              ✕
+            </button>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1.1fr .9fr",
+                minHeight: 620,
+              }}
+            >
+              <div style={{ position: "relative" }}>
                 <img
                   src={conquistaAtiva.imagem}
                   alt={conquistaAtiva.titulo}
@@ -810,48 +843,142 @@ export default function App() {
                     display: "block",
                   }}
                 />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background:
+                      "linear-gradient(to top, rgba(0,0,0,.38), rgba(0,0,0,.05) 40%, rgba(0,0,0,0))",
+                  }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    left: 24,
+                    bottom: 24,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 10,
+                    borderRadius: 999,
+                    background: "rgba(255,255,255,.88)",
+                    color: COLORS.primaryDark,
+                    padding: "12px 18px",
+                    fontWeight: 800,
+                    boxShadow: "0 10px 30px rgba(0,0,0,.16)",
+                  }}
+                >
+                  <span style={{ fontSize: 22 }}>{conquistaAtiva.medalha}</span>
+                  <span>Conquista oficial</span>
+                </div>
               </div>
+
               <div
                 style={{
-                  padding: 32,
+                  padding: 42,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
+                  background:
+                    "linear-gradient(180deg, #ffffff 0%, #f8fbfa 100%)",
                 }}
               >
                 <div
                   style={{
                     display: "inline-flex",
                     width: "fit-content",
-                    background: COLORS.soft,
+                    alignItems: "center",
+                    gap: 10,
+                    background: `${COLORS.primary}12`,
                     color: COLORS.primaryDark,
-                    padding: "10px 14px",
+                    padding: "10px 16px",
                     borderRadius: 999,
+                    fontWeight: 800,
+                    letterSpacing: ".04em",
+                  }}
+                >
+                  <span>{conquistaAtiva.medalha}</span>
+                  <span>{conquistaAtiva.categoria}</span>
+                </div>
+
+                <p
+                  style={{
+                    margin: "24px 0 0",
+                    fontSize: 12,
+                    textTransform: "uppercase",
+                    letterSpacing: ".28em",
+                    color: COLORS.muted,
                     fontWeight: 700,
                   }}
                 >
-                  {conquistaAtiva.medalha} {conquistaAtiva.categoria}
-                </div>
+                  Galeria de conquistas
+                </p>
+
                 <h3
                   style={{
-                    margin: "18px 0 0",
-                    fontSize: 42,
-                    lineHeight: 1.1,
+                    margin: "12px 0 0",
+                    fontSize: 44,
+                    lineHeight: 1.08,
                     fontWeight: 900,
                     color: COLORS.primaryDark,
                   }}
                 >
                   {conquistaAtiva.titulo}
                 </h3>
+
+                <div
+                  style={{
+                    width: 80,
+                    height: 4,
+                    borderRadius: 999,
+                    background: `linear-gradient(135deg, ${COLORS.primary}, ${COLORS.primaryDark})`,
+                    marginTop: 24,
+                    marginBottom: 24,
+                  }}
+                />
+
+                <div
+                  style={{
+                    padding: 24,
+                    borderRadius: 24,
+                    background: "white",
+                    border: `1px solid ${COLORS.border}`,
+                    boxShadow: "0 10px 24px rgba(19,50,46,.05)",
+                  }}
+                >
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: 13,
+                      textTransform: "uppercase",
+                      letterSpacing: ".22em",
+                      color: COLORS.muted,
+                      fontWeight: 700,
+                    }}
+                  >
+                    Sobre a conquista
+                  </p>
+
+                  <p
+                    style={{
+                      marginTop: 16,
+                      color: COLORS.text,
+                      fontSize: 19,
+                      lineHeight: 1.85,
+                    }}
+                  >
+                    {conquistaAtiva.descricao}
+                  </p>
+                </div>
+
                 <p
                   style={{
-                    marginTop: 20,
+                    marginTop: 22,
                     color: COLORS.muted,
-                    fontSize: 20,
+                    fontSize: 14,
                     lineHeight: 1.7,
                   }}
                 >
-                  {conquistaAtiva.descricao}
+                  Clique fora da janela ou no botão de fechar para voltar à galeria.
                 </p>
               </div>
             </div>
@@ -1182,6 +1309,17 @@ export default function App() {
                   textAlign: "left",
                   cursor: "pointer",
                   boxShadow: "0 10px 30px rgba(19,50,46,.06)",
+                  transition: "transform .22s ease, box-shadow .22s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow =
+                    "0 18px 40px rgba(19,50,46,.12)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow =
+                    "0 10px 30px rgba(19,50,46,.06)";
                 }}
               >
                 <div style={{ position: "relative", height: 224, overflow: "hidden" }}>
@@ -1593,6 +1731,28 @@ export default function App() {
           </button>
         </div>
       </section>
+
+      <style>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: translateY(14px) scale(.98);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+      `}</style>
     </div>
   );
 }
