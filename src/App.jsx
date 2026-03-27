@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const COLORS = {
   primary: "#278273",
@@ -9,7 +9,11 @@ const COLORS = {
   soft: "#f4f7f6",
   card: "#ffffff",
   border: "#dde7e3",
+  navy: "#0b1d2c",
+  navySoft: "#16314a",
 };
+
+const WHATSAPP_NUMBER = "5561982345878";
 
 const modalidades = [
   {
@@ -195,6 +199,7 @@ const planosSocio = [
       "Uma forma acessível e oficial de apoiar o crescimento do clube.",
     botao: "Quero este plano",
     whatsappMensagem: "Olá, quero assinar o plano Nação Brasiliense.",
+    selo: "Entrada oficial",
   },
   {
     nome: "Força Brasiliense",
@@ -222,6 +227,7 @@ const planosSocio = [
       "Mais vantagens práticas e mais proximidade com o dia a dia do clube.",
     botao: "Quero este plano",
     whatsappMensagem: "Olá, quero assinar o plano Força Brasiliense.",
+    selo: "Mais vantagens",
   },
   {
     nome: "Orgulho Brasiliense",
@@ -247,6 +253,7 @@ const planosSocio = [
     botao: "Quero este plano",
     whatsappMensagem: "Olá, quero assinar o plano Orgulho Brasiliense.",
     principal: true,
+    selo: "Plano premium",
   },
 ];
 
@@ -260,7 +267,40 @@ const menuLateral = [
   { label: "Programa de Sócios", href: "#socio" },
 ];
 
-function Counter({ end, label, isMobile }) {
+const beneficiosSocio = [
+  {
+    titulo: "Apoie o clube",
+    texto:
+      "Contribua diretamente para o fortalecimento do projeto esportivo e para o crescimento da estrutura do Brasiliense.",
+    icone: "💚",
+  },
+  {
+    titulo: "Viva experiências exclusivas",
+    texto:
+      "Tenha prioridade em ações, clínicas, eventos, ativações especiais e conteúdos reservados para sócios.",
+    icone: "⭐",
+  },
+  {
+    titulo: "Faça parte do impacto social",
+    texto:
+      "Participe de atividades e iniciativas que aproximam o clube da comunidade e ampliam seu alcance.",
+    icone: "🤝",
+  },
+  {
+    titulo: "Mais proximidade com o clube",
+    texto:
+      "Acompanhe mais de perto a evolução do Brasiliense Esporte Clube e se sinta parte real da construção dessa história.",
+    icone: "🏆",
+  },
+];
+
+const destaquesSocio = [
+  { valor: "3", label: "Planos para escolher" },
+  { valor: "100%", label: "Mais perto do clube" },
+  { valor: "1", label: "Comunidade oficial" },
+];
+
+function Counter({ end, label, compact }) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -284,7 +324,7 @@ function Counter({ end, label, isMobile }) {
         border: `1px solid ${COLORS.border}`,
         background: COLORS.card,
         borderRadius: 28,
-        padding: isMobile ? 20 : 24,
+        padding: compact ? 18 : 24,
         boxShadow: "0 10px 30px rgba(19,50,46,.06)",
       }}
     >
@@ -293,7 +333,7 @@ function Counter({ end, label, isMobile }) {
           margin: 0,
           color: COLORS.primaryDark,
           fontWeight: 900,
-          fontSize: isMobile ? 34 : 42,
+          fontSize: compact ? 30 : 42,
         }}
       >
         {count}
@@ -304,7 +344,7 @@ function Counter({ end, label, isMobile }) {
           color: COLORS.muted,
           textTransform: "uppercase",
           letterSpacing: ".18em",
-          fontSize: 12,
+          fontSize: 11,
         }}
       >
         {label}
@@ -343,8 +383,14 @@ function styles() {
       cursor: "pointer",
       textDecoration: "none",
       display: "inline-block",
+      transition: "transform .2s ease, box-shadow .2s ease, opacity .2s ease",
+      boxShadow: "0 12px 24px rgba(39,130,115,.18)",
     },
   };
+}
+
+function whatsappLink(message) {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
 export default function App() {
@@ -366,14 +412,36 @@ export default function App() {
   const isMobile = viewportWidth < 768;
   const isTablet = viewportWidth >= 768 && viewportWidth < 1100;
 
+  const socioGrid = useMemo(() => {
+    if (isMobile) return "1fr";
+    if (isTablet) return "repeat(2, minmax(0, 1fr))";
+    return "repeat(3, minmax(0, 1fr))";
+  }, [isMobile, isTablet]);
+
   const handleMenuItemClick = (item) => {
     setMenuOpen(false);
     if (item.label === "Programa de Sócios") {
-      setSocioOpen(true);
+      const el = document.querySelector("#socio");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
     const target = document.querySelector(item.href);
     if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const baseButtonEvents = {
+    onMouseEnter: (e) => {
+      if (!isMobile) {
+        e.currentTarget.style.transform = "translateY(-2px)";
+        e.currentTarget.style.boxShadow = "0 16px 28px rgba(39,130,115,.22)";
+      }
+    },
+    onMouseLeave: (e) => {
+      if (!isMobile) {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = "0 12px 24px rgba(39,130,115,.18)";
+      }
+    },
   };
 
   return (
@@ -464,13 +532,13 @@ export default function App() {
                 fontSize: isMobile ? 14 : 16,
                 whiteSpace: "nowrap",
               }}
+              {...baseButtonEvents}
             >
               Loja
             </a>
 
-            <button
-              type="button"
-              onClick={() => setSocioOpen(true)}
+            <a
+              href="#socio"
               style={{
                 ...s.button,
                 borderRadius: 999,
@@ -478,9 +546,10 @@ export default function App() {
                 fontSize: isMobile ? 14 : 16,
                 whiteSpace: "nowrap",
               }}
+              {...baseButtonEvents}
             >
               Seja Sócio
-            </button>
+            </a>
           </nav>
         </div>
       </header>
@@ -594,210 +663,6 @@ export default function App() {
             onClick={() => setMenuOpen(false)}
             style={{ flex: 1, background: "rgba(0,0,0,.35)", border: 0 }}
           />
-        </div>
-      )}
-
-      {socioOpen && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 60,
-            overflowY: "auto",
-            background: COLORS.bg,
-          }}
-        >
-          <div
-            style={{
-              ...s.section,
-              minHeight: "100vh",
-              paddingTop: 32,
-              paddingBottom: 32,
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: isMobile ? "start" : "center",
-                justifyContent: "space-between",
-                gap: 16,
-                borderBottom: `1px solid ${COLORS.border}`,
-                paddingBottom: 20,
-                flexDirection: isMobile ? "column" : "row",
-              }}
-            >
-              <div>
-                <p
-                  style={{
-                    margin: 0,
-                    fontSize: 12,
-                    color: COLORS.muted,
-                    textTransform: "uppercase",
-                    letterSpacing: ".3em",
-                  }}
-                >
-                  Programa de sócios
-                </p>
-                <h2
-                  style={{
-                    margin: "10px 0 0",
-                    fontSize: isMobile ? 34 : 48,
-                    lineHeight: 1,
-                    fontWeight: 900,
-                    color: COLORS.primaryDark,
-                  }}
-                >
-                  Nação Brasiliense
-                </h2>
-              </div>
-              <button
-                type="button"
-                onClick={() => setSocioOpen(false)}
-                style={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: 999,
-                  border: `1px solid ${COLORS.border}`,
-                  background: COLORS.soft,
-                  color: COLORS.primaryDark,
-                  fontSize: 22,
-                  cursor: "pointer",
-                  alignSelf: isMobile ? "flex-end" : "auto",
-                }}
-              >
-                ✕
-              </button>
-            </div>
-
-            <p
-              style={{
-                marginTop: 24,
-                maxWidth: 760,
-                color: COLORS.muted,
-                fontSize: isMobile ? 17 : 20,
-                lineHeight: 1.7,
-              }}
-            >
-              Escolha o plano ideal para apoiar o Brasiliense Esporte Clube e
-              viver mais de perto a evolução do clube.
-            </p>
-
-            <div
-              style={{
-                marginTop: 40,
-                display: "grid",
-                gridTemplateColumns: isMobile
-                  ? "1fr"
-                  : isTablet
-                  ? "repeat(2, minmax(0, 1fr))"
-                  : "repeat(3, minmax(0, 1fr))",
-                gap: 24,
-              }}
-            >
-              {planosSocio.map((plano) => (
-                <div
-                  key={plano.nome}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    borderRadius: 32,
-                    border: plano.principal
-                      ? `1px solid ${COLORS.primaryDark}`
-                      : `1px solid ${COLORS.border}`,
-                    background: plano.principal ? COLORS.primaryDark : COLORS.card,
-                    color: plano.principal ? "white" : COLORS.text,
-                    padding: isMobile ? 24 : 32,
-                    boxShadow: plano.principal
-                      ? "0 24px 60px rgba(0,0,0,.18)"
-                      : "0 10px 30px rgba(19,50,46,.06)",
-                    transform: !isMobile && plano.principal ? "scale(1.03)" : "none",
-                  }}
-                >
-                  <div>
-                    <p
-                      style={{
-                        margin: 0,
-                        fontSize: 12,
-                        textTransform: "uppercase",
-                        letterSpacing: ".25em",
-                        color: plano.principal
-                          ? "rgba(255,255,255,.7)"
-                          : COLORS.muted,
-                      }}
-                    >
-                      {plano.destaque}
-                    </p>
-                    <h3
-                      style={{
-                        margin: "14px 0 0",
-                        fontSize: isMobile ? 28 : 34,
-                        fontWeight: 900,
-                      }}
-                    >
-                      {plano.nome}
-                    </h3>
-                    <div
-                      style={{
-                        marginTop: 28,
-                        display: "flex",
-                        alignItems: "end",
-                        gap: 8,
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      <span style={{ fontSize: isMobile ? 42 : 52, fontWeight: 900 }}>
-                        {plano.preco}
-                      </span>
-                      <span
-                        style={{
-                          color: plano.principal
-                            ? "rgba(255,255,255,.7)"
-                            : COLORS.muted,
-                        }}
-                      >
-                        /mês
-                      </span>
-                    </div>
-                    <div style={{ marginTop: 28, display: "grid", gap: 14 }}>
-                      {plano.beneficios.map((beneficio) => (
-                        <div
-                          key={beneficio}
-                          style={{
-                            display: "flex",
-                            gap: 10,
-                            alignItems: "start",
-                            lineHeight: 1.7,
-                            fontSize: isMobile ? 14 : 16,
-                          }}
-                        >
-                          <span>✓</span>
-                          <span>{beneficio}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => setPlanoAtivo(plano)}
-                    style={{
-                      marginTop: 28,
-                      borderRadius: 999,
-                      padding: "16px 24px",
-                      fontWeight: 800,
-                      border: 0,
-                      cursor: "pointer",
-                      background: plano.principal ? "white" : COLORS.primaryDark,
-                      color: plano.principal ? COLORS.primaryDark : "white",
-                    }}
-                  >
-                    Escolher plano
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       )}
 
@@ -1351,9 +1216,7 @@ export default function App() {
               }}
             >
               <a
-                href={`https://wa.me/5561982345878?text=${encodeURIComponent(
-                  planoAtivo.whatsappMensagem
-                )}`}
+                href={whatsappLink(planoAtivo.whatsappMensagem)}
                 target="_blank"
                 rel="noreferrer"
                 style={{
@@ -1362,14 +1225,15 @@ export default function App() {
                   padding: "16px 28px",
                   textAlign: "center",
                 }}
+                {...baseButtonEvents}
               >
                 {planoAtivo.botao}
               </a>
 
               <a
-                href={`https://wa.me/5561982345878?text=${encodeURIComponent(
+                href={whatsappLink(
                   `Olá, tenho dúvidas sobre o plano ${planoAtivo.nome}.`
-                )}`}
+                )}
                 target="_blank"
                 rel="noreferrer"
                 style={{
@@ -1476,6 +1340,7 @@ export default function App() {
                   textAlign: "center",
                   width: isMobile ? "100%" : "auto",
                 }}
+                {...baseButtonEvents}
               >
                 Ver conquistas
               </a>
@@ -1586,7 +1451,7 @@ export default function App() {
           }}
         >
           {contadores.map((item) => (
-            <Counter key={item.label} end={item.value} label={item.label} isMobile={isMobile} />
+            <Counter key={item.label} end={item.value} label={item.label} compact={isMobile} />
           ))}
         </div>
       </section>
@@ -1632,7 +1497,22 @@ export default function App() {
           }}
         >
           {modalidades.map((item) => (
-            <div key={item.nome} style={{ ...s.panel, padding: isMobile ? 20 : 24 }}>
+            <div
+              key={item.nome}
+              style={{ ...s.panel, padding: isMobile ? 20 : 24, transition: "transform .22s ease, box-shadow .22s ease" }}
+              onMouseEnter={(e) => {
+                if (!isMobile) {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow = "0 16px 36px rgba(19,50,46,.11)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isMobile) {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 10px 30px rgba(19,50,46,.06)";
+                }
+              }}
+            >
               <div
                 style={{
                   display: "flex",
@@ -1976,8 +1856,9 @@ export default function App() {
 
             <div style={{ display: "grid", gap: 14 }}>
               <a
-                href="https://wa.me/5561982345878"
+                href={whatsappLink("Olá, quero informações para treinar no clube.")}
                 style={{ ...s.button, textAlign: "center" }}
+                {...baseButtonEvents}
               >
                 Falar no WhatsApp
               </a>
@@ -2063,6 +1944,19 @@ export default function App() {
                 border: `1px solid ${COLORS.border}`,
                 background: COLORS.card,
                 boxShadow: "0 10px 30px rgba(19,50,46,.06)",
+                transition: "transform .22s ease, box-shadow .22s ease",
+              }}
+              onMouseEnter={(e) => {
+                if (!isMobile) {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow = "0 18px 40px rgba(19,50,46,.12)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isMobile) {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 10px 30px rgba(19,50,46,.06)";
+                }
               }}
             >
               <div
@@ -2121,6 +2015,7 @@ export default function App() {
                     textAlign: "center",
                     marginTop: 18,
                   }}
+                  {...baseButtonEvents}
                 >
                   Comprar
                 </a>
@@ -2132,58 +2027,634 @@ export default function App() {
 
       <section
         id="socio"
-        style={{ ...s.section, paddingTop: isMobile ? 56 : 80, paddingBottom: isMobile ? 56 : 80 }}
+        style={{
+          ...s.section,
+          paddingTop: isMobile ? 60 : 100,
+          paddingBottom: isMobile ? 60 : 100,
+        }}
       >
         <div
           style={{
-            borderRadius: 32,
-            border: `1px solid ${COLORS.border}`,
-            background: COLORS.primaryDark,
-            padding: isMobile ? 24 : 32,
-            textAlign: "center",
-            boxShadow: "0 10px 30px rgba(19,50,46,.08)",
+            position: "relative",
+            overflow: "hidden",
+            borderRadius: 36,
+            padding: isMobile ? 24 : 60,
+            background:
+              "linear-gradient(135deg, #07131f 0%, #10263b 42%, #17344c 100%)",
+            color: "white",
+            boxShadow: "0 28px 70px rgba(7,19,31,.28)",
           }}
         >
-          <p
+          <div
             style={{
-              margin: 0,
-              fontSize: 12,
-              textTransform: "uppercase",
-              letterSpacing: ".3em",
-              color: "rgba(255,255,255,.75)",
+              position: "absolute",
+              inset: 0,
+              background:
+                "radial-gradient(circle at top right, rgba(255,255,255,.12), transparent 25%), radial-gradient(circle at bottom left, rgba(39,130,115,.18), transparent 35%)",
+              pointerEvents: "none",
+            }}
+          />
+          <div
+            style={{
+              position: "relative",
+              display: "grid",
+              gridTemplateColumns: isMobile ? "1fr" : "1.15fr .85fr",
+              gap: isMobile ? 28 : 36,
+              alignItems: "center",
             }}
           >
-            Programa de sócios
-          </p>
-          <h2
+            <div>
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  borderRadius: 999,
+                  padding: "8px 16px",
+                  background: "rgba(255,255,255,.10)",
+                  border: "1px solid rgba(255,255,255,.14)",
+                  fontSize: 12,
+                  letterSpacing: ".14em",
+                  textTransform: "uppercase",
+                  fontWeight: 700,
+                }}
+              >
+                Programa Sócio Torcedor
+              </span>
+
+              <h2
+                style={{
+                  margin: "20px 0 0",
+                  fontSize: isMobile ? 40 : 72,
+                  lineHeight: .98,
+                  fontWeight: 900,
+                  letterSpacing: "-.03em",
+                }}
+              >
+                NAÇÃO BRASILIENSE
+              </h2>
+
+              <p
+                style={{
+                  marginTop: 18,
+                  fontSize: isMobile ? 21 : 32,
+                  lineHeight: 1.15,
+                  color: "rgba(255,255,255,.96)",
+                  fontWeight: 700,
+                  maxWidth: 760,
+                }}
+              >
+                Mais que torcer. É fazer o Brasiliense acontecer.
+              </p>
+
+              <p
+                style={{
+                  marginTop: 20,
+                  maxWidth: 760,
+                  lineHeight: 1.7,
+                  color: "rgba(255,255,255,.82)",
+                  fontSize: isMobile ? 16 : 20,
+                }}
+              >
+                Faça parte do programa de sócio do Brasiliense Esporte Clube e
+                viva o clube de perto, com benefícios exclusivos, experiências
+                especiais e participação em ações esportivas e sociais.
+              </p>
+
+              <div
+                style={{
+                  marginTop: 28,
+                  display: "flex",
+                  gap: 14,
+                  flexDirection: isMobile ? "column" : "row",
+                  alignItems: isMobile ? "stretch" : "center",
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => setPlanoAtivo(planosSocio[2])}
+                  style={{
+                    borderRadius: 999,
+                    border: 0,
+                    background: "white",
+                    color: COLORS.navy,
+                    padding: "16px 26px",
+                    fontWeight: 900,
+                    cursor: "pointer",
+                    fontSize: 16,
+                    transition: "transform .2s ease, opacity .2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isMobile) e.currentTarget.style.transform = "translateY(-2px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isMobile) e.currentTarget.style.transform = "translateY(0)";
+                  }}
+                >
+                  Quero ser sócio
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    document
+                      .getElementById("planos-socio")
+                      ?.scrollIntoView({ behavior: "smooth", block: "start" })
+                  }
+                  style={{
+                    borderRadius: 999,
+                    border: "1px solid rgba(255,255,255,.22)",
+                    background: "rgba(255,255,255,.04)",
+                    color: "white",
+                    padding: "16px 26px",
+                    fontWeight: 800,
+                    cursor: "pointer",
+                    fontSize: 16,
+                  }}
+                >
+                  Ver planos
+                </button>
+              </div>
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gap: 16,
+              }}
+            >
+              <div
+                style={{
+                  borderRadius: 28,
+                  background: "rgba(255,255,255,.07)",
+                  border: "1px solid rgba(255,255,255,.10)",
+                  padding: isMobile ? 20 : 24,
+                  backdropFilter: "blur(12px)",
+                }}
+              >
+                <p
+                  style={{
+                    margin: 0,
+                    fontSize: 11,
+                    letterSpacing: ".22em",
+                    textTransform: "uppercase",
+                    color: "rgba(255,255,255,.62)",
+                  }}
+                >
+                  Comunidade oficial
+                </p>
+                <h3
+                  style={{
+                    margin: "10px 0 0",
+                    fontSize: isMobile ? 24 : 32,
+                    lineHeight: 1.05,
+                    fontWeight: 900,
+                  }}
+                >
+                  Torça, participe, viva o clube de perto.
+                </h3>
+                <p
+                  style={{
+                    margin: "12px 0 0",
+                    color: "rgba(255,255,255,.78)",
+                    lineHeight: 1.7,
+                    fontSize: isMobile ? 14 : 16,
+                  }}
+                >
+                  Mais do que apoiar: faça parte ativa da construção do
+                  Brasiliense em cada nova etapa.
+                </p>
+              </div>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                  gap: 12,
+                }}
+              >
+                {destaquesSocio.map((item) => (
+                  <div
+                    key={item.label}
+                    style={{
+                      borderRadius: 24,
+                      background: "rgba(255,255,255,.07)",
+                      border: "1px solid rgba(255,255,255,.10)",
+                      padding: isMobile ? 16 : 18,
+                      textAlign: "left",
+                    }}
+                  >
+                    <p
+                      style={{
+                        margin: 0,
+                        fontWeight: 900,
+                        fontSize: isMobile ? 24 : 30,
+                      }}
+                    >
+                      {item.valor}
+                    </p>
+                    <p
+                      style={{
+                        margin: "6px 0 0",
+                        fontSize: 12,
+                        color: "rgba(255,255,255,.72)",
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      {item.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            marginTop: 34,
+            display: "grid",
+            gridTemplateColumns: isMobile
+              ? "1fr"
+              : isTablet
+              ? "repeat(2, minmax(0, 1fr))"
+              : "repeat(4, minmax(0, 1fr))",
+            gap: 20,
+          }}
+        >
+          {beneficiosSocio.map((item) => (
+            <div
+              key={item.titulo}
+              style={{
+                borderRadius: 28,
+                border: `1px solid ${COLORS.border}`,
+                background: "white",
+                padding: 24,
+                boxShadow: "0 12px 28px rgba(19,50,46,.06)",
+                transition: "transform .22s ease, box-shadow .22s ease",
+              }}
+              onMouseEnter={(e) => {
+                if (!isMobile) {
+                  e.currentTarget.style.transform = "translateY(-5px)";
+                  e.currentTarget.style.boxShadow = "0 18px 40px rgba(19,50,46,.1)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isMobile) {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 12px 28px rgba(19,50,46,.06)";
+                }
+              }}
+            >
+              <div
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 16,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: `${COLORS.primary}12`,
+                  fontSize: 24,
+                }}
+              >
+                {item.icone}
+              </div>
+              <h3
+                style={{
+                  margin: "18px 0 0",
+                  fontSize: 24,
+                  lineHeight: 1.15,
+                  fontWeight: 900,
+                  color: COLORS.primaryDark,
+                }}
+              >
+                {item.titulo}
+              </h3>
+              <p
+                style={{
+                  margin: "12px 0 0",
+                  color: COLORS.muted,
+                  lineHeight: 1.7,
+                  fontSize: 15,
+                }}
+              >
+                {item.texto}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div
+          id="planos-socio"
+          style={{
+            marginTop: isMobile ? 54 : 72,
+          }}
+        >
+          <div
             style={{
-              margin: "12px 0 0",
-              fontSize: isMobile ? 34 : 52,
-              fontWeight: 900,
-              color: "white",
+              display: "flex",
+              alignItems: isMobile ? "start" : "end",
+              justifyContent: "space-between",
+              gap: 20,
+              flexDirection: isMobile ? "column" : "row",
             }}
           >
-            Entre para o Programa de Sócios
-          </h2>
-          <p
+            <div style={{ maxWidth: 760 }}>
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: 12,
+                  textTransform: "uppercase",
+                  letterSpacing: ".3em",
+                  color: COLORS.muted,
+                }}
+              >
+                Escolha seu plano
+              </p>
+              <h2
+                style={{
+                  margin: "12px 0 0",
+                  fontSize: isMobile ? 36 : 52,
+                  fontWeight: 900,
+                  color: COLORS.primaryDark,
+                }}
+              >
+                Encontre a melhor forma de viver o clube.
+              </h2>
+              <p
+                style={{
+                  margin: "16px 0 0",
+                  color: COLORS.muted,
+                  lineHeight: 1.7,
+                  fontSize: isMobile ? 16 : 18,
+                }}
+              >
+                Três opções para diferentes níveis de proximidade, benefícios e
+                participação na construção do Brasiliense Esporte Clube.
+              </p>
+            </div>
+
+            <a
+              href={whatsappLink("Olá, quero saber qual plano é ideal para mim.")}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                ...s.button,
+                borderRadius: 999,
+                whiteSpace: "nowrap",
+              }}
+              {...baseButtonEvents}
+            >
+              Falar no WhatsApp
+            </a>
+          </div>
+
+          <div
             style={{
-              margin: "18px auto 0",
-              maxWidth: 760,
-              fontSize: isMobile ? 17 : 20,
-              lineHeight: 1.7,
-              color: "rgba(255,255,255,.78)",
+              marginTop: 32,
+              display: "grid",
+              gridTemplateColumns: socioGrid,
+              gap: 24,
             }}
           >
-            Clique abaixo para abrir a experiência completa com os planos e
-            benefícios do clube.
-          </p>
-          <button
-            type="button"
-            onClick={() => setSocioOpen(true)}
-            style={{ ...s.button, marginTop: 28 }}
+            {planosSocio.map((plano) => (
+              <div
+                key={plano.nome}
+                style={{
+                  position: "relative",
+                  borderRadius: 32,
+                  border: plano.principal
+                    ? `1px solid ${COLORS.primaryDark}`
+                    : `1px solid ${COLORS.border}`,
+                  background: plano.principal
+                    ? `linear-gradient(180deg, ${COLORS.primaryDark} 0%, ${COLORS.primary} 100%)`
+                    : "white",
+                  color: plano.principal ? "white" : COLORS.text,
+                  padding: isMobile ? 24 : 30,
+                  boxShadow: plano.principal
+                    ? "0 24px 60px rgba(31,95,85,.24)"
+                    : "0 12px 28px rgba(19,50,46,.06)",
+                  transition: "transform .22s ease, box-shadow .22s ease",
+                  transform: plano.principal && !isMobile ? "translateY(-8px)" : "none",
+                }}
+                onMouseEnter={(e) => {
+                  if (!isMobile) {
+                    e.currentTarget.style.transform = plano.principal
+                      ? "translateY(-12px)"
+                      : "translateY(-6px)";
+                    e.currentTarget.style.boxShadow = plano.principal
+                      ? "0 28px 70px rgba(31,95,85,.28)"
+                      : "0 18px 40px rgba(19,50,46,.11)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isMobile) {
+                    e.currentTarget.style.transform =
+                      plano.principal ? "translateY(-8px)" : "translateY(0)";
+                    e.currentTarget.style.boxShadow = plano.principal
+                      ? "0 24px 60px rgba(31,95,85,.24)"
+                      : "0 12px 28px rgba(19,50,46,.06)";
+                  }
+                }}
+              >
+                <div
+                  style={{
+                    display: "inline-flex",
+                    borderRadius: 999,
+                    padding: "8px 14px",
+                    fontSize: 11,
+                    textTransform: "uppercase",
+                    letterSpacing: ".16em",
+                    fontWeight: 800,
+                    background: plano.principal
+                      ? "rgba(255,255,255,.14)"
+                      : `${COLORS.primary}10`,
+                    color: plano.principal ? "white" : COLORS.primaryDark,
+                  }}
+                >
+                  {plano.selo}
+                </div>
+
+                <p
+                  style={{
+                    margin: "18px 0 0",
+                    fontSize: 12,
+                    textTransform: "uppercase",
+                    letterSpacing: ".22em",
+                    color: plano.principal ? "rgba(255,255,255,.7)" : COLORS.muted,
+                  }}
+                >
+                  {plano.destaque}
+                </p>
+
+                <h3
+                  style={{
+                    margin: "12px 0 0",
+                    fontSize: isMobile ? 30 : 34,
+                    fontWeight: 900,
+                    lineHeight: 1.05,
+                  }}
+                >
+                  {plano.nome}
+                </h3>
+
+                <div
+                  style={{
+                    marginTop: 22,
+                    display: "flex",
+                    alignItems: "end",
+                    gap: 8,
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: isMobile ? 42 : 54,
+                      fontWeight: 900,
+                      lineHeight: 1,
+                    }}
+                  >
+                    {plano.preco}
+                  </span>
+                  <span
+                    style={{
+                      color: plano.principal
+                        ? "rgba(255,255,255,.78)"
+                        : COLORS.muted,
+                      marginBottom: 6,
+                    }}
+                  >
+                    /mês
+                  </span>
+                </div>
+
+                <p
+                  style={{
+                    marginTop: 18,
+                    lineHeight: 1.7,
+                    color: plano.principal ? "rgba(255,255,255,.86)" : COLORS.muted,
+                    minHeight: isMobile ? "auto" : 80,
+                  }}
+                >
+                  {plano.subtitulo}
+                </p>
+
+                <div style={{ marginTop: 22, display: "grid", gap: 12 }}>
+                  {plano.beneficios.slice(0, 5).map((beneficio) => (
+                    <div
+                      key={beneficio}
+                      style={{
+                        display: "flex",
+                        gap: 10,
+                        alignItems: "start",
+                        lineHeight: 1.65,
+                        fontSize: 15,
+                      }}
+                    >
+                      <span style={{ fontWeight: 900 }}>✓</span>
+                      <span>{beneficio}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setPlanoAtivo(plano)}
+                  style={{
+                    marginTop: 26,
+                    width: "100%",
+                    borderRadius: 999,
+                    border: 0,
+                    padding: "16px 24px",
+                    fontWeight: 900,
+                    cursor: "pointer",
+                    background: plano.principal ? "white" : COLORS.primaryDark,
+                    color: plano.principal ? COLORS.primaryDark : "white",
+                    transition: "transform .2s ease, opacity .2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isMobile) e.currentTarget.style.transform = "translateY(-2px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isMobile) e.currentTarget.style.transform = "translateY(0)";
+                  }}
+                >
+                  Escolher plano
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div
+          style={{
+            marginTop: isMobile ? 40 : 54,
+            borderRadius: 30,
+            overflow: "hidden",
+            border: `1px solid ${COLORS.border}`,
+            background: `linear-gradient(135deg, ${COLORS.primary}10, ${COLORS.primaryDark}06)`,
+            padding: isMobile ? 24 : 30,
+          }}
+        >
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: isMobile ? "1fr" : "1fr auto",
+              gap: 20,
+              alignItems: "center",
+            }}
           >
-            Abrir tela de sócio
-          </button>
+            <div>
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: 12,
+                  textTransform: "uppercase",
+                  letterSpacing: ".22em",
+                  color: COLORS.muted,
+                }}
+              >
+                Ainda com dúvidas?
+              </p>
+              <h3
+                style={{
+                  margin: "10px 0 0",
+                  fontSize: isMobile ? 28 : 34,
+                  fontWeight: 900,
+                  color: COLORS.primaryDark,
+                }}
+              >
+                Fale com o clube e encontre o plano ideal.
+              </h3>
+              <p
+                style={{
+                  margin: "12px 0 0",
+                  color: COLORS.muted,
+                  lineHeight: 1.7,
+                  fontSize: isMobile ? 15 : 17,
+                }}
+              >
+                Tire dúvidas sobre benefícios, funcionamento, prioridade em
+                ações e escolha a melhor forma de entrar para a Nação
+                Brasiliense.
+              </p>
+            </div>
+
+            <a
+              href={whatsappLink("Olá, quero tirar dúvidas sobre o Programa de Sócios.")}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                ...s.button,
+                borderRadius: 999,
+                textAlign: "center",
+                whiteSpace: "nowrap",
+              }}
+              {...baseButtonEvents}
+            >
+              Tirar dúvidas no WhatsApp
+            </a>
+          </div>
         </div>
       </section>
 
