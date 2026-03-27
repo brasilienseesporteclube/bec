@@ -3,14 +3,13 @@ import { useEffect, useMemo, useState } from "react";
 const COLORS = {
   primary: "#278273",
   primaryDark: "#1f5f55",
+  primaryLight: "#3aa693",
   bg: "#ffffff",
   text: "#17322e",
   muted: "#5f6f6b",
   soft: "#f4f7f6",
   card: "#ffffff",
   border: "#dde7e3",
-  navy: "#0b1d2c",
-  navySoft: "#16314a",
 };
 
 const WHATSAPP_NUMBER = "5561982345878";
@@ -257,16 +256,6 @@ const planosSocio = [
   },
 ];
 
-const menuLateral = [
-  { label: "O Clube", href: "#hero" },
-  { label: "Modalidades", href: "#modalidades" },
-  { label: "Conquistas", href: "#conquistas" },
-  { label: "Linha do Tempo", href: "#timeline" },
-  { label: "Faça Parte do Clube", href: "#treinar" },
-  { label: "Loja Oficial", href: "#loja" },
-  { label: "Programa de Sócios", href: "#socio" },
-];
-
 const beneficiosSocio = [
   {
     titulo: "Apoie o clube",
@@ -299,6 +288,20 @@ const destaquesSocio = [
   { valor: "100%", label: "Mais perto do clube" },
   { valor: "1", label: "Comunidade oficial" },
 ];
+
+const menuLateral = [
+  { label: "O Clube", href: "#hero" },
+  { label: "Modalidades", href: "#modalidades" },
+  { label: "Conquistas", href: "#conquistas" },
+  { label: "Linha do Tempo", href: "#timeline" },
+  { label: "Faça Parte do Clube", href: "#treinar" },
+  { label: "Loja Oficial", href: "#loja" },
+  { label: "Programa de Sócios", href: "#socio" },
+];
+
+function whatsappLink(message) {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
 
 function Counter({ end, label, compact }) {
   const [count, setCount] = useState(0);
@@ -374,7 +377,7 @@ function styles() {
       boxShadow: "0 10px 30px rgba(19,50,46,.06)",
     },
     button: {
-      background: `linear-gradient(135deg, ${COLORS.primary}, ${COLORS.primaryDark})`,
+      background: `linear-gradient(135deg, ${COLORS.primaryDark} 0%, ${COLORS.primary} 60%, ${COLORS.primaryLight} 100%)`,
       color: "white",
       border: 0,
       borderRadius: 16,
@@ -384,19 +387,14 @@ function styles() {
       textDecoration: "none",
       display: "inline-block",
       transition: "transform .2s ease, box-shadow .2s ease, opacity .2s ease",
-      boxShadow: "0 12px 24px rgba(39,130,115,.18)",
+      boxShadow: "0 14px 28px rgba(31,95,85,.22)",
     },
   };
-}
-
-function whatsappLink(message) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
 export default function App() {
   const s = styles();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [socioOpen, setSocioOpen] = useState(false);
   const [conquistaAtiva, setConquistaAtiva] = useState(null);
   const [planoAtivo, setPlanoAtivo] = useState(null);
   const [viewportWidth, setViewportWidth] = useState(
@@ -418,30 +416,17 @@ export default function App() {
     return "repeat(3, minmax(0, 1fr))";
   }, [isMobile, isTablet]);
 
-  const handleMenuItemClick = (item) => {
-    setMenuOpen(false);
-    if (item.label === "Programa de Sócios") {
-      const el = document.querySelector("#socio");
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-      return;
+  const hoverLift = (e, value, shadow) => {
+    if (!isMobile) {
+      e.currentTarget.style.transform = value;
+      e.currentTarget.style.boxShadow = shadow;
     }
-    const target = document.querySelector(item.href);
-    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const baseButtonEvents = {
-    onMouseEnter: (e) => {
-      if (!isMobile) {
-        e.currentTarget.style.transform = "translateY(-2px)";
-        e.currentTarget.style.boxShadow = "0 16px 28px rgba(39,130,115,.22)";
-      }
-    },
-    onMouseLeave: (e) => {
-      if (!isMobile) {
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "0 12px 24px rgba(39,130,115,.18)";
-      }
-    },
+  const handleMenuItemClick = (item) => {
+    setMenuOpen(false);
+    const target = document.querySelector(item.href);
+    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
@@ -532,7 +517,20 @@ export default function App() {
                 fontSize: isMobile ? 14 : 16,
                 whiteSpace: "nowrap",
               }}
-              {...baseButtonEvents}
+              onMouseEnter={(e) =>
+                hoverLift(
+                  e,
+                  "translateY(-2px)",
+                  "0 18px 34px rgba(31,95,85,.26)"
+                )
+              }
+              onMouseLeave={(e) =>
+                hoverLift(
+                  e,
+                  "translateY(0)",
+                  "0 14px 28px rgba(31,95,85,.22)"
+                )
+              }
             >
               Loja
             </a>
@@ -546,7 +544,20 @@ export default function App() {
                 fontSize: isMobile ? 14 : 16,
                 whiteSpace: "nowrap",
               }}
-              {...baseButtonEvents}
+              onMouseEnter={(e) =>
+                hoverLift(
+                  e,
+                  "translateY(-2px)",
+                  "0 18px 34px rgba(31,95,85,.26)"
+                )
+              }
+              onMouseLeave={(e) =>
+                hoverLift(
+                  e,
+                  "translateY(0)",
+                  "0 14px 28px rgba(31,95,85,.22)"
+                )
+              }
             >
               Seja Sócio
             </a>
@@ -946,7 +957,7 @@ export default function App() {
               style={{
                 padding: isMobile ? 24 : 40,
                 background: planoAtivo.principal
-                  ? `linear-gradient(135deg, ${COLORS.primaryDark}, ${COLORS.primary})`
+                  ? `linear-gradient(135deg, #0f2e2a 0%, ${COLORS.primaryDark} 50%, ${COLORS.primary} 100%)`
                   : "linear-gradient(135deg, #f8fbfa, #eef6f3)",
                 color: planoAtivo.principal ? "white" : COLORS.text,
               }}
@@ -1225,7 +1236,6 @@ export default function App() {
                   padding: "16px 28px",
                   textAlign: "center",
                 }}
-                {...baseButtonEvents}
               >
                 {planoAtivo.botao}
               </a>
@@ -1340,7 +1350,20 @@ export default function App() {
                   textAlign: "center",
                   width: isMobile ? "100%" : "auto",
                 }}
-                {...baseButtonEvents}
+                onMouseEnter={(e) =>
+                  hoverLift(
+                    e,
+                    "translateY(-2px)",
+                    "0 18px 34px rgba(31,95,85,.26)"
+                  )
+                }
+                onMouseLeave={(e) =>
+                  hoverLift(
+                    e,
+                    "translateY(0)",
+                    "0 14px 28px rgba(31,95,85,.22)"
+                  )
+                }
               >
                 Ver conquistas
               </a>
@@ -1499,19 +1522,17 @@ export default function App() {
           {modalidades.map((item) => (
             <div
               key={item.nome}
-              style={{ ...s.panel, padding: isMobile ? 20 : 24, transition: "transform .22s ease, box-shadow .22s ease" }}
-              onMouseEnter={(e) => {
-                if (!isMobile) {
-                  e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.boxShadow = "0 16px 36px rgba(19,50,46,.11)";
-                }
+              style={{
+                ...s.panel,
+                padding: isMobile ? 20 : 24,
+                transition: "transform .22s ease, box-shadow .22s ease",
               }}
-              onMouseLeave={(e) => {
-                if (!isMobile) {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 10px 30px rgba(19,50,46,.06)";
-                }
-              }}
+              onMouseEnter={(e) =>
+                hoverLift(e, "translateY(-4px)", "0 16px 36px rgba(19,50,46,.11)")
+              }
+              onMouseLeave={(e) =>
+                hoverLift(e, "translateY(0)", "0 10px 30px rgba(19,50,46,.06)")
+              }
             >
               <div
                 style={{
@@ -1624,20 +1645,12 @@ export default function App() {
                   boxShadow: "0 10px 30px rgba(19,50,46,.06)",
                   transition: "transform .22s ease, box-shadow .22s ease",
                 }}
-                onMouseEnter={(e) => {
-                  if (!isMobile) {
-                    e.currentTarget.style.transform = "translateY(-4px)";
-                    e.currentTarget.style.boxShadow =
-                      "0 18px 40px rgba(19,50,46,.12)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isMobile) {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow =
-                      "0 10px 30px rgba(19,50,46,.06)";
-                  }
-                }}
+                onMouseEnter={(e) =>
+                  hoverLift(e, "translateY(-4px)", "0 18px 40px rgba(19,50,46,.12)")
+                }
+                onMouseLeave={(e) =>
+                  hoverLift(e, "translateY(0)", "0 10px 30px rgba(19,50,46,.06)")
+                }
               >
                 <div style={{ position: "relative", height: 224, overflow: "hidden" }}>
                   <img
@@ -1804,7 +1817,7 @@ export default function App() {
           style={{
             borderRadius: 36,
             padding: 1,
-            background: `linear-gradient(135deg, ${COLORS.primary}, ${COLORS.primaryDark})`,
+            background: `linear-gradient(135deg, ${COLORS.primaryDark}, ${COLORS.primary})`,
           }}
         >
           <div
@@ -1858,7 +1871,20 @@ export default function App() {
               <a
                 href={whatsappLink("Olá, quero informações para treinar no clube.")}
                 style={{ ...s.button, textAlign: "center" }}
-                {...baseButtonEvents}
+                onMouseEnter={(e) =>
+                  hoverLift(
+                    e,
+                    "translateY(-2px)",
+                    "0 18px 34px rgba(31,95,85,.26)"
+                  )
+                }
+                onMouseLeave={(e) =>
+                  hoverLift(
+                    e,
+                    "translateY(0)",
+                    "0 14px 28px rgba(31,95,85,.22)"
+                  )
+                }
               >
                 Falar no WhatsApp
               </a>
@@ -1946,18 +1972,12 @@ export default function App() {
                 boxShadow: "0 10px 30px rgba(19,50,46,.06)",
                 transition: "transform .22s ease, box-shadow .22s ease",
               }}
-              onMouseEnter={(e) => {
-                if (!isMobile) {
-                  e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.boxShadow = "0 18px 40px rgba(19,50,46,.12)";
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isMobile) {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 10px 30px rgba(19,50,46,.06)";
-                }
-              }}
+              onMouseEnter={(e) =>
+                hoverLift(e, "translateY(-4px)", "0 18px 40px rgba(19,50,46,.12)")
+              }
+              onMouseLeave={(e) =>
+                hoverLift(e, "translateY(0)", "0 10px 30px rgba(19,50,46,.06)")
+              }
             >
               <div
                 style={{
@@ -2015,7 +2035,20 @@ export default function App() {
                     textAlign: "center",
                     marginTop: 18,
                   }}
-                  {...baseButtonEvents}
+                  onMouseEnter={(e) =>
+                    hoverLift(
+                      e,
+                      "translateY(-2px)",
+                      "0 18px 34px rgba(31,95,85,.26)"
+                    )
+                  }
+                  onMouseLeave={(e) =>
+                    hoverLift(
+                      e,
+                      "translateY(0)",
+                      "0 14px 28px rgba(31,95,85,.22)"
+                    )
+                  }
                 >
                   Comprar
                 </a>
@@ -2040,9 +2073,9 @@ export default function App() {
             borderRadius: 36,
             padding: isMobile ? 24 : 60,
             background:
-              "linear-gradient(135deg, #07131f 0%, #10263b 42%, #17344c 100%)",
+              "radial-gradient(circle at top right, rgba(255,255,255,0.1), transparent 25%), radial-gradient(circle at bottom left, rgba(39,130,115,0.4), transparent 40%), linear-gradient(135deg, #0f2e2a 0%, #1f5f55 50%, #278273 100%)",
             color: "white",
-            boxShadow: "0 28px 70px rgba(7,19,31,.28)",
+            boxShadow: "0 28px 70px rgba(19,50,46,.26)",
           }}
         >
           <div
@@ -2050,10 +2083,11 @@ export default function App() {
               position: "absolute",
               inset: 0,
               background:
-                "radial-gradient(circle at top right, rgba(255,255,255,.12), transparent 25%), radial-gradient(circle at bottom left, rgba(39,130,115,.18), transparent 35%)",
+                "linear-gradient(90deg, rgba(255,255,255,.02), rgba(255,255,255,0))",
               pointerEvents: "none",
             }}
           />
+
           <div
             style={{
               position: "relative",
@@ -2070,12 +2104,14 @@ export default function App() {
                   alignItems: "center",
                   borderRadius: 999,
                   padding: "8px 16px",
-                  background: "rgba(255,255,255,.10)",
-                  border: "1px solid rgba(255,255,255,.14)",
+                  background: "rgba(255,255,255,.08)",
+                  border: "1px solid rgba(255,255,255,.12)",
                   fontSize: 12,
                   letterSpacing: ".14em",
                   textTransform: "uppercase",
-                  fontWeight: 700,
+                  fontWeight: 800,
+                  color: "rgba(255,255,255,.95)",
+                  backdropFilter: "blur(12px)",
                 }}
               >
                 Programa Sócio Torcedor
@@ -2088,6 +2124,7 @@ export default function App() {
                   lineHeight: .98,
                   fontWeight: 900,
                   letterSpacing: "-.03em",
+                  color: "rgba(255,255,255,.98)",
                 }}
               >
                 NAÇÃO BRASILIENSE
@@ -2098,7 +2135,7 @@ export default function App() {
                   marginTop: 18,
                   fontSize: isMobile ? 21 : 32,
                   lineHeight: 1.15,
-                  color: "rgba(255,255,255,.96)",
+                  color: "rgba(255,255,255,.95)",
                   fontWeight: 700,
                   maxWidth: 760,
                 }}
@@ -2111,7 +2148,7 @@ export default function App() {
                   marginTop: 20,
                   maxWidth: 760,
                   lineHeight: 1.7,
-                  color: "rgba(255,255,255,.82)",
+                  color: "rgba(255,255,255,.78)",
                   fontSize: isMobile ? 16 : 20,
                 }}
               >
@@ -2136,19 +2173,20 @@ export default function App() {
                     borderRadius: 999,
                     border: 0,
                     background: "white",
-                    color: COLORS.navy,
+                    color: COLORS.primaryDark,
                     padding: "16px 26px",
                     fontWeight: 900,
                     cursor: "pointer",
                     fontSize: 16,
+                    boxShadow: "0 10px 30px rgba(0,0,0,.18)",
                     transition: "transform .2s ease, opacity .2s ease",
                   }}
-                  onMouseEnter={(e) => {
-                    if (!isMobile) e.currentTarget.style.transform = "translateY(-2px)";
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isMobile) e.currentTarget.style.transform = "translateY(0)";
-                  }}
+                  onMouseEnter={(e) =>
+                    hoverLift(e, "translateY(-2px)", "0 14px 34px rgba(0,0,0,.2)")
+                  }
+                  onMouseLeave={(e) =>
+                    hoverLift(e, "translateY(0)", "0 10px 30px rgba(0,0,0,.18)")
+                  }
                 >
                   Quero ser sócio
                 </button>
@@ -2162,13 +2200,27 @@ export default function App() {
                   }
                   style={{
                     borderRadius: 999,
-                    border: "1px solid rgba(255,255,255,.22)",
+                    border: "1px solid rgba(255,255,255,.26)",
                     background: "rgba(255,255,255,.04)",
-                    color: "white",
+                    color: "rgba(255,255,255,.95)",
                     padding: "16px 26px",
                     fontWeight: 800,
                     cursor: "pointer",
                     fontSize: 16,
+                    backdropFilter: "blur(10px)",
+                    transition: "transform .2s ease, background .2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isMobile) {
+                      e.currentTarget.style.transform = "translateY(-2px)";
+                      e.currentTarget.style.background = "rgba(255,255,255,.08)";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isMobile) {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.background = "rgba(255,255,255,.04)";
+                    }
                   }}
                 >
                   Ver planos
@@ -2185,10 +2237,10 @@ export default function App() {
               <div
                 style={{
                   borderRadius: 28,
-                  background: "rgba(255,255,255,.07)",
-                  border: "1px solid rgba(255,255,255,.10)",
-                  padding: isMobile ? 20 : 24,
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.12)",
                   backdropFilter: "blur(12px)",
+                  padding: isMobile ? 20 : 24,
                 }}
               >
                 <p
@@ -2197,7 +2249,7 @@ export default function App() {
                     fontSize: 11,
                     letterSpacing: ".22em",
                     textTransform: "uppercase",
-                    color: "rgba(255,255,255,.62)",
+                    color: "rgba(255,255,255,.68)",
                   }}
                 >
                   Comunidade oficial
@@ -2208,6 +2260,7 @@ export default function App() {
                     fontSize: isMobile ? 24 : 32,
                     lineHeight: 1.05,
                     fontWeight: 900,
+                    color: "rgba(255,255,255,.98)",
                   }}
                 >
                   Torça, participe, viva o clube de perto.
@@ -2215,7 +2268,7 @@ export default function App() {
                 <p
                   style={{
                     margin: "12px 0 0",
-                    color: "rgba(255,255,255,.78)",
+                    color: "rgba(255,255,255,.76)",
                     lineHeight: 1.7,
                     fontSize: isMobile ? 14 : 16,
                   }}
@@ -2237,8 +2290,9 @@ export default function App() {
                     key={item.label}
                     style={{
                       borderRadius: 24,
-                      background: "rgba(255,255,255,.07)",
-                      border: "1px solid rgba(255,255,255,.10)",
+                      background: "rgba(255,255,255,0.06)",
+                      border: "1px solid rgba(255,255,255,0.12)",
+                      backdropFilter: "blur(12px)",
                       padding: isMobile ? 16 : 18,
                       textAlign: "left",
                     }}
@@ -2248,6 +2302,7 @@ export default function App() {
                         margin: 0,
                         fontWeight: 900,
                         fontSize: isMobile ? 24 : 30,
+                        color: "rgba(255,255,255,.98)",
                       }}
                     >
                       {item.valor}
@@ -2292,18 +2347,12 @@ export default function App() {
                 boxShadow: "0 12px 28px rgba(19,50,46,.06)",
                 transition: "transform .22s ease, box-shadow .22s ease",
               }}
-              onMouseEnter={(e) => {
-                if (!isMobile) {
-                  e.currentTarget.style.transform = "translateY(-5px)";
-                  e.currentTarget.style.boxShadow = "0 18px 40px rgba(19,50,46,.1)";
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isMobile) {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 12px 28px rgba(19,50,46,.06)";
-                }
-              }}
+              onMouseEnter={(e) =>
+                hoverLift(e, "translateY(-5px)", "0 18px 40px rgba(19,50,46,.1)")
+              }
+              onMouseLeave={(e) =>
+                hoverLift(e, "translateY(0)", "0 12px 28px rgba(19,50,46,.06)")
+              }
             >
               <div
                 style={{
@@ -2403,7 +2452,20 @@ export default function App() {
                 borderRadius: 999,
                 whiteSpace: "nowrap",
               }}
-              {...baseButtonEvents}
+              onMouseEnter={(e) =>
+                hoverLift(
+                  e,
+                  "translateY(-2px)",
+                  "0 18px 34px rgba(31,95,85,.26)"
+                )
+              }
+              onMouseLeave={(e) =>
+                hoverLift(
+                  e,
+                  "translateY(0)",
+                  "0 14px 28px rgba(31,95,85,.22)"
+                )
+              }
             >
               Falar no WhatsApp
             </a>
@@ -2427,7 +2489,7 @@ export default function App() {
                     ? `1px solid ${COLORS.primaryDark}`
                     : `1px solid ${COLORS.border}`,
                   background: plano.principal
-                    ? `linear-gradient(180deg, ${COLORS.primaryDark} 0%, ${COLORS.primary} 100%)`
+                    ? `linear-gradient(135deg, #0f2e2a 0%, ${COLORS.primaryDark} 50%, ${COLORS.primary} 100%)`
                     : "white",
                   color: plano.principal ? "white" : COLORS.text,
                   padding: isMobile ? 24 : 30,
@@ -2592,7 +2654,7 @@ export default function App() {
             borderRadius: 30,
             overflow: "hidden",
             border: `1px solid ${COLORS.border}`,
-            background: `linear-gradient(135deg, ${COLORS.primary}10, ${COLORS.primaryDark}06)`,
+            background: `linear-gradient(135deg, ${COLORS.primary}10, ${COLORS.primaryDark}08)`,
             padding: isMobile ? 24 : 30,
           }}
         >
@@ -2650,7 +2712,20 @@ export default function App() {
                 textAlign: "center",
                 whiteSpace: "nowrap",
               }}
-              {...baseButtonEvents}
+              onMouseEnter={(e) =>
+                hoverLift(
+                  e,
+                  "translateY(-2px)",
+                  "0 18px 34px rgba(31,95,85,.26)"
+                )
+              }
+              onMouseLeave={(e) =>
+                hoverLift(
+                  e,
+                  "translateY(0)",
+                  "0 14px 28px rgba(31,95,85,.22)"
+                )
+              }
             >
               Tirar dúvidas no WhatsApp
             </a>
